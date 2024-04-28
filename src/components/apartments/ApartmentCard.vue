@@ -31,16 +31,20 @@ export default {
 <template>
     <div class="col-lg-3 col-md-4 col-sm-12 rounded-3">
         <div class="row h-100 justify-content-center align-items-center flex-column">
-            <div class="col">
-                <img v-if="apartment.cover" :src="apartment.cover" :alt="apartment.title" class="box-img rounded-3">
-            </div>
-            <div class="col">
-                <h5 class="m-2">{{ apartment.title }}</h5>
-            </div>
-            <div class="col d-flex justify-content-start align-items-center">
-                <address class="ms-2"><i class="fa-solid fa-location-dot me-2 color-main"></i> {{ apartment.address }}
-                </address>
-            </div>
+            <RouterLink class="navbar-brand " :to="{ name: 'home' }">
+
+                <div class="col">
+                    <img v-if="apartment.cover" :src="apartment.cover" :alt="apartment.title" class="box-img rounded-3">
+                </div>
+                <div class="col">
+                    <h5 class="m-2">{{ apartment.title }}</h5>
+                </div>
+                <div class="col d-flex justify-content-start align-items-center">
+                    <address class="ms-2"><i class="fa-solid fa-location-dot me-2 color-main"></i> {{ apartment.address
+                        }}
+                    </address>
+                </div>
+            </RouterLink>
         </div>
     </div>
 
