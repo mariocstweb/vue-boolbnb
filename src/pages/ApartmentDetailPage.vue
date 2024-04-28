@@ -1,13 +1,15 @@
 <script>
 import AppLoader from '../components/AppLoader.vue';
 import ApartmentCard from '../components/apartments/ApartmentCard.vue';
+import ApartmentShow from '../components/apartments/ApartmentShow.vue';
+
 import { store } from '../data/store';
 import axios from 'axios';
 const endpoint = 'http://localhost:8000/api/apartments/';
 
 export default {
     name: 'ApartmentDetailPage',
-    components: { ApartmentCard, AppLoader },
+    components: { ApartmentShow, AppLoader },
     data: () => ({
         apartment: null,
         store,
@@ -29,7 +31,7 @@ export default {
 
 <template>
     <AppLoader v-if="store.isLoading && !apartment" />
-    <ApartmentCard v-if="!store.isLoading && apartment" :apartment="apartment" :isDetail="true" />
+    <ApartmentShow v-if="!store.isLoading && apartment" :apartment="apartment" :isDetail="true" />
 
 </template>
 
