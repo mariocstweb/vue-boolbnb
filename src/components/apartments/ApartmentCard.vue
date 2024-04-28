@@ -31,7 +31,7 @@ export default {
 <template>
     <div class="col-lg-3 col-md-4 col-sm-12 rounded-3">
         <div class="row h-100 justify-content-center align-items-center flex-column">
-            <RouterLink class="navbar-brand " :to="{ name: 'home', params: { id: apartment.id } }">
+            <RouterLink class="navbar-brand " :to="{ name: 'apartment-detail', params: { id: apartment.id } }">
 
                 <div class="col">
                     <img v-if="apartment.cover" :src="apartment.cover" :alt="apartment.title" class="box-img rounded-3">
