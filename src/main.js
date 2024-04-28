@@ -18,8 +18,7 @@ library.add(faMagnifyingGlass)
 import { router } from './routers/web.js'
 
 const app = createApp(App)
-app.component('AppLoader', AppLoader)
-app.mount('#app')
+app.component('AppLoader', AppLoader).use(router).mount('#app')
 
 
 
