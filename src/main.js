@@ -13,12 +13,11 @@ import App from './App.vue'
 // // Regular Icon
 // import { } from '@fortawesome/free-regular-svg-icons'
 // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(faMagnifyingGlass)
+// library.add(faMagnifyingGlass)
 
 import { router } from './routers/web.js'
 
-const app = createApp(App)
-app.component('AppLoader', AppLoader).use(router).mount('#app')
+createApp(App).component('AppLoader', AppLoader).use(router).mount('#app')
 
 
 
