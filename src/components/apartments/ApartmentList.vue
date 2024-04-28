@@ -9,9 +9,12 @@ export default {
 </script>
 
 <template>
-    <section id="Apartments-list">
-        <div v-if="apartments.length" class="d-flex justify-conten-center align-items-center flex-column">
+    <section id="Apartments-list ">
+        <div v-if="apartments.length" class="row mt-5">
+
+
             <ApartmentCard v-for="apartment in apartments" :key="apartment.id" :apartment="apartment" />
+
 
         </div>
         <h4 v-else>Non ci sono Vocaboli</h4>

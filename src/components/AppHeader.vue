@@ -30,7 +30,7 @@ export default {
                 BoolBnB
             </RouterLink>
             <RouterLink class="navbar-brand " :to="{ name: 'home' }">
-                <span class="hover-color">Home</span>
+                <span class="color-main">Home</span>
             </RouterLink>
 
         </div>
@@ -56,8 +56,9 @@ export default {
     background-color: transparent;
 
     &.change_color {
-        background-color: #1B222E;
+        background-color: white;
         transition: 0.5s linear;
+
     }
 
     .box-img {
