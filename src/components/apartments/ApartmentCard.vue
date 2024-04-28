@@ -29,47 +29,34 @@ export default {
 </script>
 
 <template>
-    <div class="card w-100 d-flex  my-3">
-        <div class="card-header fw-semibold border-bottom-0 d-flex align-items-center justify-content-between">
-            <h3>
-                {{ apartment.title }}
-            </h3>
-            <RouterLink v-if="!isDetail" class="btn show-button"><i class="fa-solid fa-eye"></i>
+    <div class="col-lg-3 col-md-4 col-sm-12 rounded-3">
+        <div class="row h-100 justify-content-center align-items-center flex-column">
+            <RouterLink class="navbar-brand " :to="{ name: 'home' }">
+
+                <div class="col">
+                    <img v-if="apartment.cover" :src="apartment.cover" :alt="apartment.title" class="box-img rounded-3">
+                </div>
+                <div class="col">
+                    <h5 class="m-2">{{ apartment.title }}</h5>
+                </div>
+                <div class="col d-flex justify-content-start align-items-center">
+                    <address class="ms-2"><i class="fa-solid fa-location-dot me-2 color-main"></i> {{ apartment.address
+                        }}
+                    </address>
+                </div>
             </RouterLink>
-        </div>
-        <div class="card-body my-3 clearfix">
-            <img v-if="apartment.cover" :src="apartment.cover" :alt="apartment.title" class="img-fluid float-start">
-
-            <p>
-
-                {{ isDetail ? apartment.description : abstract }}
-            </p>
-            <!-- <div>
-                <h5>Link</h5>
-                <a :href="apartment.link.url"></a>
-            </div> -->
-
-            <!-- <div v-if="apartment.tags.length" class="d-flex align-items-center justify-content-end">
-                <span v-for="tag in apartment.tags" :key="tag.id" class="me-2 badge rounded-pill"
-                    :class="`text-bg-${tag.color}`">{{ tag.label }}</span>
-            </div> -->
         </div>
     </div>
 
 </template>
 
 <style lang="scss" scoped>
-.card {
-    border: 1px solid #258277;
+.box-img {
+    height: 270px;
+    width: 100%;
 }
 
-.card-header,
-.card-footer {
-    background-color: #51a59b;
-
-    .show-button {
-        background-color: #454c81;
-        color: #fff;
-    }
+.color-main {
+    color: #ff5a5f;
 }
 </style>
