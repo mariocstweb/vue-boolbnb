@@ -59,8 +59,8 @@ export default {
         <ul class="dropdown-menu">
           <li v-for="service in services" :key="service.id">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" :value="service.id" :id="service.id"
-                v-model="form.selectedServices">
+              <input class="form-check-input" type="checkbox" name="selectedServices[]" :value="service.id"
+                :id="service.id" v-model="form.selectedServices">
               <label class="form-check-label" :for="service.id">
                 {{ service.label }}
               </label>
