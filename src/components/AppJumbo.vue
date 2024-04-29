@@ -5,6 +5,9 @@ export default {
     data: () => ({}),
     components: { SearchForm },
     emits: ['search-apartments'],
+    props: {
+        services: Array
+    }
 };
 </script>
 
@@ -18,7 +21,7 @@ export default {
             </div>
         </div>
     </div>
-    <SearchForm @submit-search="$emit('search-apartments', $event)" />
+    <SearchForm @submit-search="$emit('search-apartments', $event)" :services="services" />
 
 
 
