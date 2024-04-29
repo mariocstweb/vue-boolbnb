@@ -6,6 +6,7 @@ export default {
       address: '',
       rooms: 1,
       beds: 1,
+      selectedServices: []
     }
   }),
   methods: {
@@ -58,7 +59,8 @@ export default {
         <ul class="dropdown-menu">
           <li v-for="service in services" :key="service.id">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" :id="service.id">
+              <input class="form-check-input" type="checkbox" :value="service.id" :id="service.id"
+                v-model="form.selectedServices">
               <label class="form-check-label" :for="service.id">
                 {{ service.label }}
               </label>
