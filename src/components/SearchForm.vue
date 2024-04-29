@@ -1,8 +1,8 @@
 <script>
 export default {
   name: 'SearchForm',
-  data: () => ({ searchTerm: '', range: '' }),
-  emits: ['submit-search', 'range-menu'],
+  data: () => ({ searchTerm: '' }),
+  emits: ['submit-search'],
 }
 </script>
 
@@ -42,13 +42,9 @@ export default {
           <i class="fa-solid fa-ruler-horizontal me-3"></i><span class="me-4">Cerca entro 20 Km</span>
         </button>
         <ul class="dropdown-menu">
-          <!-- <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Action</a></li>
           <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li> -->
-          <li><a class="dropdown-item" @click="searchByRange(5)">5 km</a></li>
-          <li><a class="dropdown-item" @click="searchByRange(10)">10 km</a></li>
-          <li><a class="dropdown-item" @click="searchByRange(15)">15 km</a></li>
-          <li><a class="dropdown-item" @click="searchByRange(20)">20 km</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
         </ul>
       </div>
       <button class="btn text-white bg-hover" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>

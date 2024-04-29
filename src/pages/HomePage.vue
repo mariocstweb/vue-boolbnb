@@ -38,19 +38,6 @@ export default {
             const endpoint = `${defaultEndpoint}?address=${searchTerm}`;
             this.fetchApartments(endpoint);
         },
-
-        searchApartments() {
-            let endpoint = defaultEndpoint;
-            if (this.searchAddress) {
-                endpoint += `?address=${this.searchAddress}`;
-            }
-            if (this.searchRange > 0) {
-                const latitude = ''// latitude della posizione dell'utente
-                const longitude = ''// longitude della posizione dell'utente
-                endpoint += `&latitude=${latitude}&longitude=${longitude}&range=${this.searchRange}`;
-            }
-            this.fetchApartments(endpoint);
-        },
     },
 
     created() {
@@ -70,5 +57,3 @@ export default {
         <ApartmentList v-else :apartments="apartments.data" />
     </div>
 </template>
-
-<style scoped></style>

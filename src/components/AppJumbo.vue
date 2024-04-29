@@ -4,7 +4,7 @@ export default {
     name: 'Appjumbo',
     data: () => ({}),
     components: { SearchForm },
-    emits: ['search-apartments', 'range-menu'],
+    emits: ['search-apartments'],
 };
 </script>
 
