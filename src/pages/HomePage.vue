@@ -12,9 +12,7 @@ export default {
     components: { ApartmentList, AppJumbo },
     data: () => ({
         apartments: [],
-        services: {
-            data: [],
-        },
+        services: [],
         isAlertOpen: false,
         store
     }),
@@ -53,6 +51,7 @@ export default {
         },
 
         searchApartments(searchForm) {
+
             const endpoint = defaultEndpoint + '?';
 
             const queryParams = [];
@@ -69,26 +68,27 @@ export default {
 
             const queryString = queryParams.join('&');
             const finalEndpoint = endpoint + queryString;
-
-
-
-            // Filtra gli appartamenti in base ai servizi selezionati
-            let filteredApartments = this.apartments.data;
-            if (searchForm.selectedServices.length > 0) {
-                filteredApartments = filteredApartments.filter(apartment => {
-                    return searchForm.selectedServices.every(serviceId => {
-                        return apartment.services.includes(serviceId);
-                    });
-                });
-            }
-
-            // Aggiorna la lista degli appartamenti con quelli filtrati
-            this.apartments.data = filteredApartments;
-
-            // Effettua la richiesta con l'URL costruito
             this.fetchApartments(finalEndpoint);
-        }
 
+
+
+            if (searchForm.selectedServices.length > 0) {
+                axios.get(`${servicesEndpoint}${searchForm.selectedServices}/apartments/`)
+                    .then(res => {
+                        const { apartments } = res.data;
+                        this.apartments = apartments;
+                    })
+                    .catch(err => {
+                        console.error(err.message);
+                        this.$router.push({ name: 'not-found' });
+                    })
+                    .then(() => {
+                        store.isLoading = false;
+                    })
+
+            };
+
+        }
     },
 
     created() {
