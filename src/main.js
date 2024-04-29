@@ -1,7 +1,9 @@
 // Bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 import { createApp } from 'vue'
 import AppLoader from './components/AppLoader.vue'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import '@fontsource/roboto'
 import '@fontsource-variable/manrope';
 import App from './App.vue'
