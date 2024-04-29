@@ -16,8 +16,8 @@ export default {
 
 <template>
   <AppHeader />
-  <AppJumbo />
-  <main class="container">
+  <!-- <AppJumbo /> -->
+  <main>
     <AppLoader v-if="store.isLoading" />
     <RouterView />
   </main>

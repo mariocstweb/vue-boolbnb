@@ -1,15 +1,15 @@
 <script>
 import ApartmentList from '../components/apartments/ApartmentList.vue';
+import AppJumbo from '../components/AppJumbo.vue';
 import AppAlert from '../components/AppAlert.vue';
 import { store } from '../data/store';
 import axios from 'axios';
 import BasePagination from '../components/BasePagination.vue';
 const defaultEndpoint = 'http://localhost:8000/api/apartments/';
 
-
 export default {
     name: 'HomePage',
-    components: { ApartmentList },
+    components: { ApartmentList, AppJumbo },
     data: () => ({
         apartments: {
             data: [],
@@ -20,19 +20,39 @@ export default {
     }),
     methods: {
         fetchApartments(endpoint = defaultEndpoint) {
-            store.isLoading = true
-            axios.get(endpoint).then(res => {
-                this.isAlertOpen = false;
-                const { data, links } = res.data
-                this.apartments = { data, links };
-            }).catch(err => {
-                console.error(err)
-                this.isAlertOpen = true;
-            }).then(() => {
-                store.isLoading = false;
-            })
-        }
+            this.isLoading = true;
+            axios.get(endpoint)
+                .then(response => {
+                    this.isAlertOpen = false;
+                    this.apartments = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                    this.isAlertOpen = true;
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
+        },
+        searchApartments(searchTerm) {
+            const endpoint = `${defaultEndpoint}?address=${searchTerm}`;
+            this.fetchApartments(endpoint);
+        },
+
+        searchApartments() {
+            let endpoint = defaultEndpoint;
+            if (this.searchAddress) {
+                endpoint += `?address=${this.searchAddress}`;
+            }
+            if (this.searchRange > 0) {
+                const latitude = ''// latitude della posizione dell'utente
+                const longitude = ''// longitude della posizione dell'utente
+                endpoint += `&latitude=${latitude}&longitude=${longitude}&range=${this.searchRange}`;
+            }
+            this.fetchApartments(endpoint);
+        },
     },
+
     created() {
         this.fetchApartments();
     }
@@ -40,12 +60,15 @@ export default {
 </script>
 
 <template>
-    <AppAlert :show="isAlertOpen" @close="isAlertOpen = false" @retry="fetchApartments" />
-    <div class="d-flex justify-content-center flex-column align-items-center">
-        <BasePagination class="" :links="apartments.links" @changePage="fetchApartments" />
+    <AppJumbo @search-apartments="searchApartments" />
+    <div class="container">
+        <AppAlert :show="isAlertOpen" @close="isAlertOpen = false" @retry="fetchApartments" />
+        <div class="d-flex justify-content-center flex-column align-items-center">
+            <BasePagination class="" :links="apartments.links" @changePage="fetchApartments" />
+        </div>
+        <AppLoader v-if="store.isLoading" />
+        <ApartmentList v-else :apartments="apartments.data" />
     </div>
-    <AppLoader v-if="store.isLoading" />
-    <ApartmentList v-else :apartments="apartments.data" />
 </template>
 
 <style scoped></style>

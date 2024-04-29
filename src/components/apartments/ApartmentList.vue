@@ -17,7 +17,7 @@ export default {
 
 
         </div>
-        <h4 v-else>Non ci sono Vocaboli</h4>
+        <h4 v-else>Non ci sono appartamenti</h4>
     </section>
 
 </template>
