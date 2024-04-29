@@ -34,9 +34,25 @@ export default {
                     this.isLoading = false;
                 });
         },
-        searchApartments(searchTerm) {
-            const endpoint = `${defaultEndpoint}?address=${searchTerm}`;
-            this.fetchApartments(endpoint);
+        searchApartments(searchForm) {
+            const endpoint = defaultEndpoint + '?';
+
+            const queryParams = [];
+            if (searchForm.address) {
+                queryParams.push(`address=${searchForm.address}`);
+            }
+            if (searchForm.rooms) {
+                queryParams.push(`rooms=${searchForm.rooms}`);
+            }
+            if (searchForm.beds) {
+                queryParams.push(`beds=${searchForm.beds}`);
+            }
+
+            const queryString = queryParams.join('&');
+            const finalEndpoint = endpoint + queryString;
+
+            // Effettua la richiesta con l'URL costruito
+            this.fetchApartments(finalEndpoint);
         },
     },
 
