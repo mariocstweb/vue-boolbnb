@@ -49,6 +49,17 @@ export default {
                     this.isLoading = false;
                 });
         },
+        // searchService(searchForm) {
+        //     const endpoint = servicesEndpoint + searchForm.selectedServices[0] + '/apartments/' + '?';
+
+        //     const queryParams = [];
+        //     if (searchForm.selectedServices.length > 0) {
+
+        //     }
+        //     const queryString = queryParams.join('&');
+        //     const finalEndpoint = endpoint + queryString;
+        //     this.fetchApartments(finalEndpoint);
+        // },
 
         searchApartments(searchForm) {
 
