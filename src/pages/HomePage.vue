@@ -6,6 +6,7 @@ import { store } from '../data/store';
 import axios from 'axios';
 import BasePagination from '../components/BasePagination.vue';
 const defaultEndpoint = 'http://localhost:8000/api/apartments/';
+const servicesEndpoint = 'http://localhost:8000/api/services/';
 
 export default {
     name: 'HomePage',
@@ -14,6 +15,9 @@ export default {
         apartments: {
             data: [],
             links: [],
+        },
+        services: {
+            data: [],
         },
         isAlertOpen: false,
         store
@@ -34,6 +38,23 @@ export default {
                     this.isLoading = false;
                 });
         },
+
+        fetchServices(endpoint = servicesEndpoint) {
+            this.isLoading = true;
+            axios.get(endpoint)
+                .then(response => {
+                    this.isAlertOpen = false;
+                    this.services = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                    this.isAlertOpen = true;
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
+        },
+
         searchApartments(searchForm) {
             const endpoint = defaultEndpoint + '?';
 
@@ -58,12 +79,13 @@ export default {
 
     created() {
         this.fetchApartments();
+        this.fetchServices();
     }
 };
 </script>
 
 <template>
-    <AppJumbo @search-apartments="searchApartments" />
+    <AppJumbo @search-apartments="searchApartments" :services="services" />
     <div class="container">
         <AppAlert :show="isAlertOpen" @close="isAlertOpen = false" @retry="fetchApartments" />
         <div class="d-flex justify-content-center flex-column align-items-center">

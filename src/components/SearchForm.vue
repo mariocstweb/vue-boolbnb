@@ -12,6 +12,9 @@ export default {
     submitSearch() {
       this.$emit('submit-search', this.form);
     }
+  },
+  props: {
+    services: Array
   }
 }
 </script>
@@ -53,9 +56,14 @@ export default {
           <i class="fa-solid fa-hand-holding-heart me-3"></i><span class="me-4">Servizi</span>
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <li v-for="service in services" :key="service.id">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" :id="service.id">
+              <label class="form-check-label" :for="service.id">
+                {{ service.label }}
+              </label>
+            </div>
+          </li>
         </ul>
       </div>
       <div class="dropdown">
