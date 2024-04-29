@@ -38,8 +38,7 @@ export default {
         </ul>
       </div>
       <div class="dropdown">
-        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-          v-model="range" @change="$emit('range-menu', range)">
+        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fa-solid fa-ruler-horizontal me-3"></i><span class="me-4">Cerca entro 20 Km</span>
         </button>
         <ul class="dropdown-menu">
