@@ -4,7 +4,6 @@ import AppJumbo from '../components/AppJumbo.vue';
 import AppAlert from '../components/AppAlert.vue';
 import { store } from '../data/store';
 import axios from 'axios';
-import BasePagination from '../components/BasePagination.vue';
 const defaultEndpoint = 'http://localhost:8000/api/apartments/';
 const servicesEndpoint = 'http://localhost:8000/api/services/';
 
@@ -12,10 +11,7 @@ export default {
     name: 'HomePage',
     components: { ApartmentList, AppJumbo },
     data: () => ({
-        apartments: {
-            data: [],
-            links: [],
-        },
+        apartments: [],
         services: {
             data: [],
         },
@@ -28,6 +24,7 @@ export default {
             axios.get(endpoint)
                 .then(response => {
                     this.isAlertOpen = false;
+                    console.log(response.data)
                     this.apartments = response.data;
                 })
                 .catch(error => {
@@ -105,10 +102,7 @@ export default {
     <AppJumbo @search-apartments="searchApartments" :services="services" />
     <div class="container">
         <AppAlert :show="isAlertOpen" @close="isAlertOpen = false" @retry="fetchApartments" />
-        <div class="d-flex justify-content-center flex-column align-items-center">
-            <BasePagination class="" :links="apartments.links" @changePage="fetchApartments" />
-        </div>
         <AppLoader v-if="store.isLoading" />
-        <ApartmentList v-else :apartments="apartments.data" />
+        <ApartmentList v-else :apartments="apartments" />
     </div>
 </template>
