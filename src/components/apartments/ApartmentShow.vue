@@ -62,12 +62,40 @@ export default {
                     <!-- description -->
                     <h2 class="mb-3"> Descrizione</h2>
                     <p class="fs-5">{{ apartment.description }}</p>
+                    <section id="detail">
+
+                        <h2 class="card-title mt-5 mb-2">Dettaglio appartamento</h2>
+                        <div class="fw-medium stats mb-2">Come è composto</div>
+                        <ul class="d-flex gap-3">
+                            <li>
+                                <span class="badge fw-medium"><i class="fa-solid fa-door-closed me-2"></i>
+                                    {{ apartment.rooms }} camere</span>
+                            </li>
+                            <li>
+                                <span class="badge fw-medium"><i class="fa-solid fa-bath me-2"></i>
+                                    {{ apartment.bathrooms }} bagni</span>
+                            </li>
+                            <li>
+                                <span class="badge fw-medium"><i class="fa-solid fa-ruler-horizontal me-2"></i>
+                                    {{ apartment.sqm }} mq</span>
+                            </li>
+                            <li>
+                                <span class="badge fw-medium"><i class="fa-solid fa-bed me-2"></i> {{ apartment.rooms }}
+                                    letti</span>
+                            </li>
+                        </ul>
+                    </section>
                 </div>
                 <div class="col">
                     <!-- SERVIZI -->
                     <h2 class="mb-3"> Servizi</h2>
                     <ul>
-                        <li v-for="service in apartment.services">{{ service.label }}</li>
+                        <li v-for="service in apartment.services"
+                            class="fw-medium mb-3 d-flex gap-3 align-items-center fs-5">
+                            <i class="fa-solid fa-circle-check icon-show"></i>
+                            <span class="material-symbols-outlined">{{ service.icon }}</span>
+                            {{ service.label }}
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -115,6 +143,10 @@ export default {
     border: 1px solid #258277;
 }
 
+.icon-show {
+    color: #ff5a5f;
+}
+
 .card-header,
 .card-footer {
     background-color: #51a59b;
@@ -144,5 +176,51 @@ export default {
 
 .color-main {
     color: #ff5a5f;
+}
+
+#detail {
+
+    /* RECIPIENTE IMMAGINE DI COPERTINA */
+    .thumb-img {
+        width: 100%;
+        height: 400px;
+        margin-bottom: 25px;
+
+        /* IMMAGINE COPERTINA */
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 15px;
+        }
+    }
+
+    p {
+
+        /* INDIRIZZO */
+        .road {
+            font-size: 20px;
+        }
+    }
+
+    /* DETTAGLI */
+    .stats {
+        font-size: 20px;
+        color: #737373;
+    }
+
+    /* LISTA */
+    ul {
+        padding: 0;
+        list-style-type: none;
+
+        /* LISTA DETTAGLI */
+        .badge {
+            color: black;
+            font-size: 15px;
+            background-color: #F2F2F2;
+        }
+    }
 }
 </style>
