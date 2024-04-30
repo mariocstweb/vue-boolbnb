@@ -66,6 +66,9 @@ export default {
                 <div class="col">
                     <!-- SERVIZI -->
                     <h2 class="mb-3"> Servizi</h2>
+                    <ul>
+                        <li v-for="service in apartment.services">{{ service.label }}</li>
+                    </ul>
                 </div>
             </div>
             <h2>Informazioni sull'host</h2>
