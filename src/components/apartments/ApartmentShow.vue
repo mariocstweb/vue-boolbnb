@@ -86,7 +86,12 @@ export default {
 
 
             return `${day}/${month}/${year} alle ${hours}:${minutes}`;
+        },
+
+        hasErrors() {
+            return Object.entries(this.errors).length
         }
+
     }
 };
 </script>
