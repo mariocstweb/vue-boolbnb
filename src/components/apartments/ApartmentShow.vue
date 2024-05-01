@@ -1,5 +1,6 @@
 <script>
 import { RouterLink } from 'vue-router';
+import axios from 'axios';
 const message_endpoint = 'http://localhost:8000/api/messages';
 export default {
     name: 'ApartmentCard',
@@ -19,7 +20,7 @@ export default {
         }
     },
     methods: {
-        sendMessage() {
+        sendMessage(id) {
             // Validation
             this.validation();
 
@@ -31,10 +32,10 @@ export default {
                 axios.post(message_endpoint, {
                     name: this.form.name,
                     email: this.form.email,
-                    content: this.form.content,
-                    apartment_id: this.apartment.id
+                    text: this.form.text,
+                    apartment_id: id
                 })
-                    .then(() => { this.form = { name: '', email: '', content: '', apartment_id: '' }; this.errors = {}; this.successMessage = 'Messaggio inviato'; })
+                    .then(() => { this.form = { name: '', email: '', text: '', apartment_id: id }; this.errors = {}; this.successMessage = 'Messaggio inviato'; })
                     .catch(err => {
                         if (err.response.status === 400) {
                             const { errors } = err.response.data;
@@ -53,7 +54,7 @@ export default {
         validation() {
             this.errors = {};
             if (!this.form.name) { this.errors.name = 'Il nome è obbligatorio' }
-            if (!this.form.content) { this.errors.content = 'Il contenuto della mail è obbligatorio' }
+            if (!this.form.text) { this.errors.text = 'Il contenuto della mail è obbligatorio' }
             if (!this.form.email) {
                 this.errors.email = 'La mail è obbligatoria'
             } else if (!this.form.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
@@ -205,7 +206,7 @@ export default {
             <h3 class="mb-3">Hai domande? Invia un messaggio all'host</h3>
 
             <!-- Form -->
-            <form class="form-floating needs-validation" @submit.prevent="sendMessage" novalidate>
+            <form class="form-floating needs-validation" @submit.prevent=" sendMessage(apartment.id)" novalidate>
                 <!-- Name -->
                 <div class="mb-4">
                     <label for="name" class="form-label">Inserisci il tuo nome <span
@@ -228,10 +229,10 @@ export default {
                 <div class="mb-2">
                     <label for="exampleFormControlTextarea1" class="form-label">Contenuto del messaggio <span
                             class="form-text text-danger fs-5">*</span></label>
-                    <textarea class="form-control" :class="{ 'is-invalid': errors.content }"
+                    <textarea class="form-control" :class="{ 'is-invalid': errors.text }"
                         placeholder="Scrivi un messaggio" id="floatingTextarea" style="height: 160px;"
-                        v-model.trim="form.content" required></textarea>
-                    <span v-if="errors.content" class="invalid-feedback" role="alert">{{ errors.content
+                        v-model.trim="form.text" required></textarea>
+                    <span v-if="errors.text" class="invalid-feedback" role="alert">{{ errors.text
                         }}</span>
                 </div>
 
