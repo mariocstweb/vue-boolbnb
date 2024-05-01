@@ -245,9 +245,11 @@ export default {
                         </div>
                     </div>
                     <!-- Alert success -->
-                    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div v-if="successMessage"
+                        class="alert alert-success alert-dismissible p-2 show d-flex justify-content-between align-items-center gap-2 m-0"
+                        role="alert">
                         <strong>{{ successMessage }} <i class="fa-solid fa-thumbs-up"></i></strong>
-                        <button type="button" class="button-close" data-bs-dismiss="alert" aria-label="Close"><i
+                        <button type="button" class="button-close btn p-0" data-bs-dismiss="alert" aria-label="Close"><i
                                 class="fa-solid fa-x"></i></button>
                     </div>
 
