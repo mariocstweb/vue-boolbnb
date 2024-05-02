@@ -17,7 +17,8 @@ export default {
         apartments: [],
         services: [],
         isAlertOpen: false,
-        store
+        store,
+        rooms: null
     }),
     methods: {
         fetchApartments(endpoint = defaultEndpoint) {
@@ -40,6 +41,24 @@ export default {
             }
         },
 
+        filterApartments(endpoint = defaultEndpoint) {
+            // Aggiungi i parametri di ricerca per rooms e beds
+            endpoint += `?rooms=${this.rooms}`;
+            axios.get(endpoint)
+                .then(response => {
+                    this.isAlertOpen = false;
+                    console.log(response.data)
+                    this.apartments = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                    this.isAlertOpen = true;
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
+        },
+
         fetchServices(endpoint = servicesEndpoint) {
             this.isLoading = true;
             axios.get(endpoint)
@@ -55,56 +74,7 @@ export default {
                     this.isLoading = false;
                 });
         },
-        // searchService(searchForm) {
-        //     const endpoint = servicesEndpoint + searchForm.selectedServices[0] + '/apartments/' + '?';
 
-        //     const queryParams = [];
-        //     if (searchForm.selectedServices.length > 0) {
-
-        //     }
-        //     const queryString = queryParams.join('&');
-        //     const finalEndpoint = endpoint + queryString;
-        //     this.fetchApartments(finalEndpoint);
-        // },
-
-        // searchApartments(searchForm) {
-
-        //     const endpoint = defaultEndpoint + '?';
-
-        //     const queryParams = [];
-        //     if (searchForm.address) {
-        //         queryParams.push(`address=${searchForm.address}`);
-        //     }
-        //     if (searchForm.rooms) {
-        //         queryParams.push(`rooms=${searchForm.rooms}`);
-        //     }
-        //     if (searchForm.beds) {
-        //         queryParams.push(`beds=${searchForm.beds}`);
-        //     }
-
-
-        //     const queryString = queryParams.join('&');
-        //     const finalEndpoint = endpoint + queryString;
-        //     this.fetchApartments(finalEndpoint);
-
-
-
-        //     if (searchForm.selectedServices.length > 0) {
-        //         axios.get(`${servicesEndpoint}${searchForm.selectedServices}/apartments/`)
-        //             .then(res => {
-        //                 const { apartments } = res.data;
-        //                 this.apartments = apartments;
-        //             })
-        //             .catch(err => {
-        //                 console.error(err.message);
-        //                 this.$router.push({ name: 'not-found' });
-        //             })
-        //             .then(() => {
-        //                 store.isLoading = false;
-        //             })
-
-        //     };
-        // },
         handleAddressSelect(selectedAddress) {
 
             if (selectedAddress.lat && selectedAddress.lon) {
@@ -151,7 +121,12 @@ export default {
         <AppAlert :show="isAlertOpen" @close="isAlertOpen = false" @retry="fetchApartments" />
         <div class="d-flex justify-content-center align-items-center search-form gap-1">
             <AxiosExample @select="handleAddressSelect" />
-            <SearchForm @submit-search="$emit('search-apartments', $event)" :services="services" />
+            <!-- <SearchForm @submit-search="$emit('search-apartments', $event)" :services="services" /> -->
+            <form @prevent.default="filterApartments">
+                <input type="number" class="form-control form" id="rooms" name="rooms" placeholder="Min 1"
+                    v-model="rooms">
+                <button type="submit">INVIA</button>
+            </form>
         </div>
         <AppLoader v-if="store.isLoading" />
         <ApartmentList v-else :apartments="apartments" />
