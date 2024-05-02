@@ -75,39 +75,35 @@ export default {
                 });
         },
 
-        handleAddressSelect(selectedAddress) {
+        handleAddressSelect(form) {
+    console.log(form);
 
-            if (selectedAddress.lat && selectedAddress.lon) {
-                // Gestisci l'indirizzo selezionato come desiderato, ad esempio salvandolo nel tuo modello
-                const lat = selectedAddress.lat;
-                const lon = selectedAddress.lon;
+    if (form.lat && form.lon) {
+        // Costruisci l'endpoint con i parametri lat e lon
+        const filteredEndpoint = `${filterEndpoint}/?lat=${form.lat}&lon=${form.lon}`;
+        axios.get(filteredEndpoint)
+            .then(response => {
+                this.isAlertOpen = false;
+                console.log(response.data);
+                this.apartments = response.data;
+            })
+            .catch(error => {
+                console.error(error);
+                this.isAlertOpen = true;
+            })
+            .finally(() => {
+                this.isLoading = false;
+            });
 
-                // Se c'è un indirizzo selezionato, filtra gli appartamenti per quell'indirizzo
-                const filteredEndpoint = `${filterEndpoint}?lat=${lat}&lon=${lon}`;
-                axios.get(filteredEndpoint)
-                    .then(response => {
-                        this.isAlertOpen = false;
-                        console.log(response.data)
-                        this.apartments = response.data;
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        this.isAlertOpen = true;
-                    })
-                    .finally(() => {
-                        this.isLoading = false;
-                    });
+        // Utilizza lat e lon come desideri
+        console.log("Latitudine:", form.lat);
+        console.log("Longitudine:", form.lon);
+    } else {
+        this.fetchApartments();
+    }
 
-                // Utilizza lat e lon come desideri
-                console.log("Latitudine:", lat);
-                console.log("Longitudine:", lon);
-                console.log(selectedAddress);
-            } else {
-                this.fetchApartments();
-            }
-        }
+}
     },
-
     created() {
         this.fetchApartments();
         this.fetchServices();
@@ -120,13 +116,8 @@ export default {
     <div class="container">
         <AppAlert :show="isAlertOpen" @close="isAlertOpen = false" @retry="fetchApartments" />
         <div class="d-flex justify-content-center align-items-center search-form gap-1">
-            <AxiosExample @select="handleAddressSelect" />
-            <!-- <SearchForm @submit-search="$emit('search-apartments', $event)" :services="services" /> -->
-            <form @prevent.default="filterApartments">
-                <input type="number" class="form-control form" id="rooms" name="rooms" placeholder="Min 1"
-                    v-model="rooms">
-                <button type="submit">INVIA</button>
-            </form>
+            <!-- <AxiosExample @select="handleAddressSelect" /> -->
+            <SearchForm @submit-search="handleAddressSelect" :services="services" />
         </div>
         <AppLoader v-if="store.isLoading" />
         <ApartmentList v-else :apartments="apartments" />
