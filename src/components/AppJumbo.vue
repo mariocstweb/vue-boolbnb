@@ -21,11 +21,6 @@ export default {
             </div>
         </div>
     </div>
-    <SearchForm @submit-search="$emit('search-apartments', $event)" :services="services" />
-
-
-
-
 </template>
 
 <style lang="scss" scoped>
