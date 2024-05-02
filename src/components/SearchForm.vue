@@ -61,8 +61,13 @@ export default {
       this.form.showSuggestions = false;
     },
     resetFilter() {
-      this.form = {};
-      this.submitSearch();
+      this.form.rooms = 1,
+        this.form.beds = 1,
+        this.form.lat = null,
+        this.form.lon = null,
+        this.form.searchTerm = '',
+        this.form.selectedServices = [],
+        this.submitSearch();
     },
     submitSearch() {
       // Emetti un evento 'submit-search' con i dati del form
