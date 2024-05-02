@@ -93,5 +93,10 @@ export default {
     margin: 0;
     padding: 10px;
     position: absolute;
+
+    li {
+        cursor: pointer;
+        margin: 10px;
+    }
 }
 </style>

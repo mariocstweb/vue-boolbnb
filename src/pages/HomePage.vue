@@ -1,15 +1,17 @@
 <script>
 import ApartmentList from '../components/apartments/ApartmentList.vue';
+import AxiosExample from '../components/AxiosExample.vue';
 import AppJumbo from '../components/AppJumbo.vue';
 import AppAlert from '../components/AppAlert.vue';
 import { store } from '../data/store';
 import axios from 'axios';
 const defaultEndpoint = 'http://localhost:8000/api/apartments/';
+const filterEndpoint = 'http://localhost:8000/api/apartments/filter';
 const servicesEndpoint = 'http://localhost:8000/api/services/';
 
 export default {
     name: 'HomePage',
-    components: { ApartmentList, AppJumbo },
+    components: { ApartmentList, AppJumbo, AxiosExample },
     data: () => ({
         apartments: [],
         services: [],
@@ -19,19 +21,22 @@ export default {
     methods: {
         fetchApartments(endpoint = defaultEndpoint) {
             this.isLoading = true;
-            axios.get(endpoint)
-                .then(response => {
-                    this.isAlertOpen = false;
-                    console.log(response.data)
-                    this.apartments = response.data;
-                })
-                .catch(error => {
-                    console.error(error);
-                    this.isAlertOpen = true;
-                })
-                .finally(() => {
-                    this.isLoading = false;
-                });
+            // Se non c'è un indirizzo selezionato, mostra tutti gli appartamenti
+            if (!this.selectedAddress) {
+                axios.get(endpoint)
+                    .then(response => {
+                        this.isAlertOpen = false;
+                        console.log(response.data)
+                        this.apartments = response.data;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        this.isAlertOpen = true;
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
+                    });
+            }
         },
 
         fetchServices(endpoint = servicesEndpoint) {
@@ -61,44 +66,70 @@ export default {
         //     this.fetchApartments(finalEndpoint);
         // },
 
-        searchApartments(searchForm) {
+        // searchApartments(searchForm) {
 
-            const endpoint = defaultEndpoint + '?';
+        //     const endpoint = defaultEndpoint + '?';
 
-            const queryParams = [];
-            if (searchForm.address) {
-                queryParams.push(`address=${searchForm.address}`);
-            }
-            if (searchForm.rooms) {
-                queryParams.push(`rooms=${searchForm.rooms}`);
-            }
-            if (searchForm.beds) {
-                queryParams.push(`beds=${searchForm.beds}`);
-            }
-
-
-            const queryString = queryParams.join('&');
-            const finalEndpoint = endpoint + queryString;
-            this.fetchApartments(finalEndpoint);
+        //     const queryParams = [];
+        //     if (searchForm.address) {
+        //         queryParams.push(`address=${searchForm.address}`);
+        //     }
+        //     if (searchForm.rooms) {
+        //         queryParams.push(`rooms=${searchForm.rooms}`);
+        //     }
+        //     if (searchForm.beds) {
+        //         queryParams.push(`beds=${searchForm.beds}`);
+        //     }
 
 
+        //     const queryString = queryParams.join('&');
+        //     const finalEndpoint = endpoint + queryString;
+        //     this.fetchApartments(finalEndpoint);
 
-            if (searchForm.selectedServices.length > 0) {
-                axios.get(`${servicesEndpoint}${searchForm.selectedServices}/apartments/`)
-                    .then(res => {
-                        const { apartments } = res.data;
-                        this.apartments = apartments;
-                    })
-                    .catch(err => {
-                        console.error(err.message);
-                        this.$router.push({ name: 'not-found' });
-                    })
-                    .then(() => {
-                        store.isLoading = false;
-                    })
 
-            };
 
+        //     if (searchForm.selectedServices.length > 0) {
+        //         axios.get(`${servicesEndpoint}${searchForm.selectedServices}/apartments/`)
+        //             .then(res => {
+        //                 const { apartments } = res.data;
+        //                 this.apartments = apartments;
+        //             })
+        //             .catch(err => {
+        //                 console.error(err.message);
+        //                 this.$router.push({ name: 'not-found' });
+        //             })
+        //             .then(() => {
+        //                 store.isLoading = false;
+        //             })
+
+        //     };
+        // },
+        handleAddressSelect(selectedAddress) {
+
+            // Gestisci l'indirizzo selezionato come desiderato, ad esempio salvandolo nel tuo modello
+            const lat = selectedAddress.lat;
+            const lon = selectedAddress.lon;
+
+            // Se c'è un indirizzo selezionato, filtra gli appartamenti per quell'indirizzo
+            const filteredEndpoint = `${filterEndpoint}?lat=${lat}&lon=${lon}`;
+            axios.get(filteredEndpoint)
+                .then(response => {
+                    this.isAlertOpen = false;
+                    console.log(response.data)
+                    this.apartments = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                    this.isAlertOpen = true;
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
+
+            // Utilizza lat e lon come desideri
+            console.log("Latitudine:", lat);
+            console.log("Longitudine:", lon);
+            console.log(selectedAddress);
         }
     },
 
@@ -113,6 +144,10 @@ export default {
     <AppJumbo @search-apartments="searchApartments" :services="services" />
     <div class="container">
         <AppAlert :show="isAlertOpen" @close="isAlertOpen = false" @retry="fetchApartments" />
+        <div>
+            <AxiosExample @select="handleAddressSelect"></AxiosExample>
+            <!-- Altri componenti o contenuti -->
+        </div>
         <AppLoader v-if="store.isLoading" />
         <ApartmentList v-else :apartments="apartments" />
     </div>
