@@ -1,19 +1,44 @@
 <script>
+import axios from 'axios';
+
 export default {
   name: 'SearchForm',
-  data: () => ({
-    form: {
-      address: '',
-      rooms: 1,
-      beds: 1,
-      selectedServices: []
-    }
-  }),
-
+  data() {
+    return {
+      form: {
+        address: '',
+        rooms: 1,
+        beds: 1,
+        selectedServices: []
+      }
+    };
+  },
   methods: {
     submitSearch() {
-      this.$emit('submit-search', this.form);
-    },
+      // Costruisci l'endpoint per la ricerca
+      let endpoint = 'http://localhost:8000/api/apartments/?';
+
+      // Aggiungi i parametri di ricerca per rooms e beds
+      endpoint += `rooms=${this.form.rooms}&beds=${this.form.beds}`;
+
+      // Se sono selezionati dei servizi, aggiungili come parametri
+      if (this.form.selectedServices.length > 0) {
+        const serviceParams = this.form.selectedServices.map(serviceId => `services=${serviceId}`).join('&');
+        endpoint += `&${serviceParams}`;
+      }
+
+      // Esegui la chiamata Axios al backend
+      axios.get(endpoint)
+        .then(response => {
+          const { apartments } = response.data;
+          // Aggiorna la lista degli appartamenti nel componente padre
+          this.$emit('submit-search', apartments);
+        })
+        .catch(error => {
+          console.error(error);
+          // Gestisci eventuali errori
+        });
+    }
   },
   props: {
     services: Array
