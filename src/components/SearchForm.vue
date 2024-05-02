@@ -60,6 +60,10 @@ export default {
       this.form.lon = suggestion.lon;
       this.form.showSuggestions = false;
     },
+    resetFilter() {
+      this.form = {};
+      this.submitSearch();
+    },
     submitSearch() {
       // Emetti un evento 'submit-search' con i dati del form
       this.$emit('submit-search', this.form);
@@ -77,15 +81,15 @@ export default {
   <form @submit.prevent="submitSearch">
     <div class="d-flex justify-content-center align-items-center gap-1">
       <div class="input-container">
-          <input type="text" v-model.trim="form.searchTerm" @input="searchPlace" placeholder="Cerca un indirizzo"
-              class="form-control form">
-          <i class="fa-solid fa-location-dot icon text-black"></i>
-          <ul v-if="form.showSuggestions" class="suggestions">
-              <li v-for="suggestion in form.suggestions" :key="suggestion.lat + suggestion.lon"
-                  @click="selectSuggestion(suggestion)">
-                  {{ suggestion.address }}
-              </li>
-          </ul>
+        <input type="text" v-model.trim="form.searchTerm" @input="searchPlace" placeholder="Cerca un indirizzo"
+          class="form-control form">
+        <i class="fa-solid fa-location-dot icon text-black"></i>
+        <ul v-if="form.showSuggestions" class="suggestions">
+          <li v-for="suggestion in form.suggestions" :key="suggestion.lat + suggestion.lon"
+            @click="selectSuggestion(suggestion)">
+            {{ suggestion.address }}
+          </li>
+        </ul>
       </div>
       <div class="dropdown">
         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -97,14 +101,12 @@ export default {
           <li>
             <i class="fa-solid fa-door-open mx-3"></i>
             Stanze
-            <input type="number" class="form-control form" id="rooms" name="rooms" placeholder="Min 1"
-              v-model="form.rooms">
+            <input type="number" class="form-control form" id="rooms" name="rooms" min="1" v-model="form.rooms">
           </li>
           <li>
             <i class="fa-solid fa-bed mx-3"></i>
             Posti letto
-            <input type="number" class="form-control form" id="beds" name="beds" placeholder="Min 1"
-              v-model="form.beds">
+            <input type="number" class="form-control form" id="beds" name="beds" min="1" v-model="form.beds">
           </li>
         </ul>
       </div>
@@ -138,6 +140,8 @@ export default {
     </div>
   </form>
 
+  <button class="btn text-white bg-hover" type="reset" @click="resetFilter">Reset</button>
+
 </template>
 
 
@@ -169,19 +173,19 @@ export default {
 }
 
 .suggestions {
-    background-color: whitesmoke;
-    list-style: none;
-    margin: 0;
-    padding: 10px;
-    position: absolute;
+  background-color: whitesmoke;
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  position: absolute;
 
-    li {
-        cursor: pointer;
-        padding: 5px;
+  li {
+    cursor: pointer;
+    padding: 5px;
 
-        &:hover {
-            background-color: white;
-        }
+    &:hover {
+      background-color: white;
     }
+  }
 }
 </style>

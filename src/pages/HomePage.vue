@@ -18,7 +18,6 @@ export default {
         services: [],
         isAlertOpen: false,
         store,
-        rooms: null
     }),
     methods: {
         fetchApartments(endpoint = defaultEndpoint) {
@@ -76,33 +75,47 @@ export default {
         },
 
         handleAddressSelect(form) {
-    console.log(form);
+            console.log(form);
 
-    if (form.lat && form.lon) {
-        // Costruisci l'endpoint con i parametri lat e lon
-        const filteredEndpoint = `${filterEndpoint}/?lat=${form.lat}&lon=${form.lon}`;
-        axios.get(filteredEndpoint)
-            .then(response => {
-                this.isAlertOpen = false;
-                console.log(response.data);
-                this.apartments = response.data;
-            })
-            .catch(error => {
-                console.error(error);
-                this.isAlertOpen = true;
-            })
-            .finally(() => {
-                this.isLoading = false;
-            });
+            if (form.lat == null && form.lon == null) {
+                this.fetchApartments();
+            } else if (form.lat && form.lon) {
+                let filteredEndpoint = `${filterEndpoint}/?lat=${form.lat}&lon=${form.lon}`;
 
-        // Utilizza lat e lon come desideri
-        console.log("Latitudine:", form.lat);
-        console.log("Longitudine:", form.lon);
-    } else {
-        this.fetchApartments();
-    }
+                // Aggiungi il filtro per il numero di stanze se è stato selezionato dall'utente
+                if (form.rooms) {
+                    filteredEndpoint += `&rooms=${form.rooms}`;
+                }
 
-}
+                if (form.beds) {
+                    filteredEndpoint += `&beds=${form.beds}`;
+                }
+
+                // Aggiungi il filtro per i servizi selezionati
+                if (form.selectedServices.length > 0) {
+                    const servicesQuery = form.selectedServices.join(',');
+                    filteredEndpoint += `&services=${servicesQuery}`;
+                }
+
+                axios.get(filteredEndpoint)
+                    .then(response => {
+                        this.isAlertOpen = false;
+                        console.log(response.data);
+                        this.apartments = response.data;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        this.isAlertOpen = true;
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
+                    });
+
+                // Utilizza lat e lon come desideri
+                console.log("Latitudine:", form.lat);
+                console.log("Longitudine:", form.lon);
+            }
+        }
     },
     created() {
         this.fetchApartments();
