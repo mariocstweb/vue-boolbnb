@@ -98,25 +98,31 @@ export default {
 </script>
 
 <template>
-
+    <!-- NAVIGAZIONE PAGINE  -->
+    <nav class="d-flex align-items-center">
+        <ol class="breadcrumb m-0">
+            <li><span><i class="fa-solid fa-chevron-left me-2 fs-5 mt-1"></i></span></li>
+            <li class="breadcrumb-item">
+                <RouterLink :to="{ name: 'home' }" class="color-link">home</RouterLink>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Dettaglio appartamento
+            </li>
+        </ol>
+    </nav>
     <div class="box-show mt-4">
         <div class="row">
             <div class="col">
                 <!-- title -->
                 <h1>{{ apartment.title }}</h1>
             </div>
-            <div class="col  d-flex justify-content-end align-items-center m-0">
-                <!-- button indietro -->
-                <RouterLink :to="{ name: 'home' }" class="btn bg-hover">Torna Indietro</RouterLink>
-            </div>
         </div>
         <section id="info-apartment" class="mt-3">
-            <div class="row pb-3">
-                <div class="col-6 ">
+            <div class="row row-photo pb-3">
+                <div class="col">
                     <!-- img apartment -->
-                    <img :src="apartment.cover" :alt="apartment.title" class="img-fluid img-apartment-guest rounded-4">
+                    <img :src="apartment.cover" :alt="apartment.title" class=" rounded-4">
                 </div>
-                <!-- mettere altre immagini -->
             </div>
             <div class="row">
                 <div class="col">
@@ -203,7 +209,7 @@ export default {
             </div>
         </section>
         <section id="message-form" class="mt-5">
-            <h3 class="mb-3">Hai domande? Invia un messaggio all'host</h3>
+            <h3 class="mb-3">Contatta l'host per maggiori informazioni</h3>
 
             <!-- Form -->
             <form class="form-floating needs-validation" @submit.prevent=" sendMessage(apartment.id)" novalidate>
@@ -211,8 +217,8 @@ export default {
                 <div class="mb-4">
                     <label for="name" class="form-label">Inserisci il tuo nome <span
                             class="form-text text-danger fs-5">*</span></label>
-                    <input type="text" class="form-control" :class="{ 'is-invalid': errors.name }" id="name"
-                        v-model.trim="form.name" required>
+                    <input type="text" class="form-control" placeholder="Mario Rossi"
+                        :class="{ 'is-invalid': errors.name }" id="name" v-model.trim="form.name" required>
                     <span v-if="errors.name" class="invalid-feedback" role="alert">{{ errors.name }}</span>
                     <span id="title-error" class="text-danger"></span>
 
@@ -248,7 +254,7 @@ export default {
                     <div v-if="successMessage"
                         class="alert alert-success alert-dismissible p-2 show d-flex justify-content-between align-items-center gap-2 m-0"
                         role="alert">
-                        <strong>{{ successMessage }} <i class="fa-solid fa-thumbs-up"></i></strong>
+                        <strong>{{ successMessage }} <i class="fa-regular fa-circle-check"></i></strong>
                         <button type="button" class="button-close btn p-0" data-bs-dismiss="alert" aria-label="Close"><i
                                 class="fa-solid fa-x"></i></button>
                     </div>
@@ -273,6 +279,7 @@ export default {
 .icon-show {
     color: #ff5a5f;
 }
+
 
 .card-header,
 .card-footer {
@@ -348,6 +355,16 @@ export default {
             font-size: 15px;
             background-color: #F2F2F2;
         }
+    }
+
+
+}
+
+.color-link {
+    color: #ff5a5f;
+
+    &:hover {
+        color: #ff999c;
     }
 }
 </style>
