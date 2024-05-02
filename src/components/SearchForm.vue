@@ -1,4 +1,6 @@
 <script>
+import AxiosExample from '../components/AxiosExample.vue';
+
 export default {
   name: 'SearchForm',
   data: () => ({
@@ -9,10 +11,19 @@ export default {
       selectedServices: []
     }
   }),
+
+  components: { AxiosExample },
+
   methods: {
     submitSearch() {
       this.$emit('submit-search', this.form);
+    },
+
+    handleAddressSelect(selectedAddress) {
+      // Gestisci l'indirizzo selezionato come desiderato, ad esempio salvandolo nel tuo modello
+      console.log(selectedAddress);
     }
+
   },
   props: {
     services: Array
@@ -25,11 +36,9 @@ export default {
 
   <form @submit.prevent="submitSearch">
     <div class="d-flex justify-content-center align-items-center search-form gap-1">
-      <div class="input-container w-50">
-        <!-- Input Ricerca -->
-        <input type="text" class="form-control form" id="address" name="address" placeholder="Indirizzo..."
-          v-model="form.address">
-        <i class="fa-solid fa-location-dot icon text-black"></i>
+      <div>
+        <AxiosExample @select="handleAddressSelect"></AxiosExample>
+        <!-- Altri componenti o contenuti -->
       </div>
       <div class="dropdown">
         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
