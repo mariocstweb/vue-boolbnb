@@ -2,6 +2,7 @@
 import ApartmentList from '../components/apartments/ApartmentList.vue';
 import AxiosExample from '../components/AxiosExample.vue';
 import AppJumbo from '../components/AppJumbo.vue';
+import SearchForm from '../components/SearchForm.vue';
 import AppAlert from '../components/AppAlert.vue';
 import { store } from '../data/store';
 import axios from 'axios';
@@ -11,7 +12,7 @@ const servicesEndpoint = 'http://localhost:8000/api/services/';
 
 export default {
     name: 'HomePage',
-    components: { ApartmentList, AppJumbo, AxiosExample },
+    components: { ApartmentList, AppJumbo, AxiosExample, SearchForm },
     data: () => ({
         apartments: [],
         services: [],
@@ -106,30 +107,34 @@ export default {
         // },
         handleAddressSelect(selectedAddress) {
 
-            // Gestisci l'indirizzo selezionato come desiderato, ad esempio salvandolo nel tuo modello
-            const lat = selectedAddress.lat;
-            const lon = selectedAddress.lon;
+            if (selectedAddress.lat && selectedAddress.lon) {
+                // Gestisci l'indirizzo selezionato come desiderato, ad esempio salvandolo nel tuo modello
+                const lat = selectedAddress.lat;
+                const lon = selectedAddress.lon;
 
-            // Se c'è un indirizzo selezionato, filtra gli appartamenti per quell'indirizzo
-            const filteredEndpoint = `${filterEndpoint}?lat=${lat}&lon=${lon}`;
-            axios.get(filteredEndpoint)
-                .then(response => {
-                    this.isAlertOpen = false;
-                    console.log(response.data)
-                    this.apartments = response.data;
-                })
-                .catch(error => {
-                    console.error(error);
-                    this.isAlertOpen = true;
-                })
-                .finally(() => {
-                    this.isLoading = false;
-                });
+                // Se c'è un indirizzo selezionato, filtra gli appartamenti per quell'indirizzo
+                const filteredEndpoint = `${filterEndpoint}?lat=${lat}&lon=${lon}`;
+                axios.get(filteredEndpoint)
+                    .then(response => {
+                        this.isAlertOpen = false;
+                        console.log(response.data)
+                        this.apartments = response.data;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        this.isAlertOpen = true;
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
+                    });
 
-            // Utilizza lat e lon come desideri
-            console.log("Latitudine:", lat);
-            console.log("Longitudine:", lon);
-            console.log(selectedAddress);
+                // Utilizza lat e lon come desideri
+                console.log("Latitudine:", lat);
+                console.log("Longitudine:", lon);
+                console.log(selectedAddress);
+            } else {
+                this.fetchApartments();
+            }
         }
     },
 
@@ -144,11 +149,30 @@ export default {
     <AppJumbo @search-apartments="searchApartments" :services="services" />
     <div class="container">
         <AppAlert :show="isAlertOpen" @close="isAlertOpen = false" @retry="fetchApartments" />
-        <div>
-            <AxiosExample @select="handleAddressSelect"></AxiosExample>
-            <!-- Altri componenti o contenuti -->
+        <div class="d-flex justify-content-center align-items-center search-form gap-1">
+            <AxiosExample @select="handleAddressSelect" />
+            <SearchForm @submit-search="$emit('search-apartments', $event)" :services="services" />
         </div>
         <AppLoader v-if="store.isLoading" />
         <ApartmentList v-else :apartments="apartments" />
     </div>
 </template>
+
+<style lang="scss" scoped>
+.search-form {
+    margin: 0 auto;
+    position: relative;
+    bottom: 25px;
+    background-color: #f2f2f2;
+    padding: 5px 5px;
+    border-radius: 10px;
+    max-width: 900px;
+
+    .btn-light {
+        background-color: white;
+        color: black;
+        border: 1px solid #DEE2E6;
+
+    }
+}
+</style>

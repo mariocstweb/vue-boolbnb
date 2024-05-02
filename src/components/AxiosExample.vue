@@ -96,7 +96,11 @@ export default {
 
     li {
         cursor: pointer;
-        margin: 10px;
+        padding: 5px;
+
+        &:hover {
+            background-color: white;
+        }
     }
 }
 </style>
