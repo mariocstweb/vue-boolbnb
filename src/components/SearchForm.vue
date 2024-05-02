@@ -6,38 +6,63 @@ export default {
   data() {
     return {
       form: {
-        address: '',
         rooms: 1,
         beds: 1,
-        selectedServices: []
+        lat: null,
+        lon: null,
+        selectedServices: [],
+        searchTerm: '',
+        suggestions: [],
+        showSuggestions: false,
+        timeoutId: null,
+        baseUri: 'https://api.tomtom.com/search/2/geocode/',
+        baseParams: {
+          key: '53sGOQMX7vlm9luNV3aNYNhTMmaEKsKx',
+          limit: 5,
+          countrySet: 'IT',
+          language: 'it-IT'
+        },
       }
     };
   },
   methods: {
-    submitSearch() {
-      // Costruisci l'endpoint per la ricerca
-      let endpoint = 'http://localhost:8000/api/apartments/?';
-
-      // Aggiungi i parametri di ricerca per rooms e beds
-      endpoint += `rooms=${this.form.rooms}&beds=${this.form.beds}`;
-
-      // Se sono selezionati dei servizi, aggiungili come parametri
-      if (this.form.selectedServices.length > 0) {
-        const serviceParams = this.form.selectedServices.map(serviceId => `services=${serviceId}`).join('&');
-        endpoint += `&${serviceParams}`;
+    searchPlace() {
+      this.form.showSuggestions = true;
+      clearTimeout(this.form.timeoutId);
+      this.form.timeoutId = setTimeout(() => {
+        this.fetchApi(this.form.searchTerm);
+      }, 400);
+    },
+    fetchApi(query) {
+      if (!query) {
+        this.form.suggestions = [];
+        this.form.showSuggestions = false;
+        return;
       }
-
-      // Esegui la chiamata Axios al backend
-      axios.get(endpoint)
-        .then(response => {
-          const { apartments } = response.data;
-          // Aggiorna la lista degli appartamenti nel componente padre
-          this.$emit('submit-search', apartments);
-        })
-        .catch(error => {
-          console.error(error);
-          // Gestisci eventuali errori
-        });
+      axios.get(`${this.form.baseUri}${query}.json`, {
+        params: this.form.baseParams
+      }).then(res => {
+        const { results } = res.data;
+        this.form.suggestions = results.map(result => ({
+          address: result.address.freeformAddress,
+          lat: result.position.lat,
+          lon: result.position.lon
+        }));
+      }).catch(err => {
+        console.error(err);
+        this.form.suggestions = [];
+        this.form.showSuggestions = false;
+      });
+    },
+    selectSuggestion(suggestion) {
+      this.form.searchTerm = suggestion.address;
+      this.form.lat = suggestion.lat;
+      this.form.lon = suggestion.lon;
+      this.form.showSuggestions = false;
+    },
+    submitSearch() {
+      // Emetti un evento 'submit-search' con i dati del form
+      this.$emit('submit-search', this.form);
     }
   },
   props: {
@@ -51,6 +76,17 @@ export default {
 
   <form @submit.prevent="submitSearch">
     <div class="d-flex justify-content-center align-items-center gap-1">
+      <div class="input-container">
+          <input type="text" v-model.trim="form.searchTerm" @input="searchPlace" placeholder="Cerca un indirizzo"
+              class="form-control form">
+          <i class="fa-solid fa-location-dot icon text-black"></i>
+          <ul v-if="form.showSuggestions" class="suggestions">
+              <li v-for="suggestion in form.suggestions" :key="suggestion.lat + suggestion.lon"
+                  @click="selectSuggestion(suggestion)">
+                  {{ suggestion.address }}
+              </li>
+          </ul>
+      </div>
       <div class="dropdown">
         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fa-solid fa-door-open me-3"></i><span class="me-4">{{ form.rooms }} Stanze &#8226; {{ form.beds }}
@@ -130,5 +166,22 @@ export default {
   &:hover {
     background-color: #ff999c;
   }
+}
+
+.suggestions {
+    background-color: whitesmoke;
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+    position: absolute;
+
+    li {
+        cursor: pointer;
+        padding: 5px;
+
+        &:hover {
+            background-color: white;
+        }
+    }
 }
 </style>
