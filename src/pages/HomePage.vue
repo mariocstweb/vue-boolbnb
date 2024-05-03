@@ -59,7 +59,7 @@ export default {
         },
 
         fetchServices(endpoint = servicesEndpoint) {
-            this.isLoading = true;
+            this.store.isLoading = true;
             axios.get(endpoint)
                 .then(response => {
                     this.isAlertOpen = false;
@@ -70,7 +70,7 @@ export default {
                     this.isAlertOpen = true;
                 })
                 .finally(() => {
-                    this.isLoading = false;
+                    this.store.isLoading = false;
                 });
         },
 
@@ -95,6 +95,9 @@ export default {
                 if (form.selectedServices.length > 0) {
                     const servicesQuery = form.selectedServices.join(',');
                     filteredEndpoint += `&services=${servicesQuery}`;
+                }
+                if (form.radius) {
+                    filteredEndpoint += `&radius=${form.radius}`;
                 }
 
                 axios.get(filteredEndpoint)
@@ -143,9 +146,9 @@ export default {
     position: relative;
     bottom: 25px;
     background-color: #f2f2f2;
-    padding: 5px 5px;
+    padding: 7px 7px;
     border-radius: 10px;
-    max-width: 900px;
+    max-width: 1000px;
 
     .btn-light {
         background-color: white;

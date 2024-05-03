@@ -15,6 +15,7 @@ export default {
         suggestions: [],
         showSuggestions: false,
         timeoutId: null,
+        radius: 5000,
         baseUri: 'https://api.tomtom.com/search/2/geocode/',
         baseParams: {
           key: '53sGOQMX7vlm9luNV3aNYNhTMmaEKsKx',
@@ -72,6 +73,9 @@ export default {
     submitSearch() {
       // Emetti un evento 'submit-search' con i dati del form
       this.$emit('submit-search', this.form);
+    },
+    selectRadius(radius) {
+      this.form.radius = radius;
     }
   },
   props: {
@@ -136,9 +140,18 @@ export default {
           <i class="fa-solid fa-ruler-horizontal me-3"></i><span class="me-4">Cerca entro 20 Km</span>
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Action</a></li>
+          <!-- <li><a class="dropdown-item" href="#">Action</a></li>
           <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+          <li><a class="dropdown-item" @click="selectRadius(5000)" v-bind:class="{ 'active': form.radius === 5000 }">5
+              km</a></li>
+          <li><a class="dropdown-item" @click="selectRadius(10000)"
+              v-bind:class="{ 'active': form.radius === 10000 }">10 km</a></li>
+          <li><a class="dropdown-item" @click="selectRadius(15000)"
+              v-bind:class="{ 'active': form.radius === 15000 }">15 km</a></li>
+          <li><a class="dropdown-item" @click="selectRadius(20000)"
+              v-bind:class="{ 'active': form.radius === 20000 }">20 km</a></li>
+
         </ul>
       </div>
       <button class="btn text-white bg-hover" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>

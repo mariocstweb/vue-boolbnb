@@ -39,7 +39,7 @@ export default {
                 <div class="col">
                     <h5 class="m-2">{{ apartment.title }}</h5>
                 </div>
-                <div class="col d-flex justify-content-start align-items-center">
+                <div class="col-12 d-flex justify-content-start align-items-center pe-2 flex-wrap">
                     <address class="ms-2"><i class="fa-solid fa-location-dot me-2 color-main"></i> {{ apartment.address
                         }}
                     </address>
