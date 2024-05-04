@@ -29,7 +29,7 @@ export default {
                 <img src="../img/logo.png" alt="BoolBnB" width="40px">
                 BoolBnB
             </RouterLink>
-            <RouterLink class="navbar-brand " :to="{ name: 'home' }">
+            <RouterLink class="navbar-brand pb-2" :to="{ name: 'home' }">
                 <span class="color-main">Home</span>
             </RouterLink>
 
