@@ -1,8 +1,10 @@
 <script>
+/* IMPORTO AXIOS */
 import axios from 'axios';
 
 export default {
   name: 'SearchForm',
+
   data() {
     return {
       form: {
@@ -26,7 +28,9 @@ export default {
       }
     };
   },
+
   methods: {
+    /* FUNZIONE CHE SI ATTIVA ALL'EVENTO @INPUT (ADDRESS)  */
     searchPlace() {
       this.form.showSuggestions = true;
       clearTimeout(this.form.timeoutId);
@@ -34,12 +38,18 @@ export default {
         this.fetchApi(this.form.searchTerm);
       }, 400);
     },
+
+    /* FUNZIONE IN CUI PASSO IL VALORE SCELTO DALL'UTENTE */
     fetchApi(query) {
+
+      /* SE NON CE VALORE */
       if (!query) {
         this.form.suggestions = [];
         this.form.showSuggestions = false;
         return;
       }
+
+      /* SE CE UN VALORE FACCIO UNA CHIMATA API AL TOMTOM  */
       axios.get(`${this.form.baseUri}${query}.json`, {
         params: this.form.baseParams
       }).then(res => {
@@ -54,13 +64,18 @@ export default {
         this.form.suggestions = [];
         this.form.showSuggestions = false;
       });
+
     },
+
+    /* FUNZIONE CHE VIENE RTICHIAMTA AL @CLICK SU UNA VIA SCLETA DALL'UTENTE */
     selectSuggestion(suggestion) {
       this.form.searchTerm = suggestion.address;
       this.form.lat = suggestion.lat;
       this.form.lon = suggestion.lon;
       this.form.showSuggestions = false;
     },
+
+    /* FUNZIONE CHE VIENE RICHIMATA AL @CLICK PER RESETTTARE */
     resetFilter() {
       this.form.rooms = 1,
         this.form.beds = 1,
@@ -70,43 +85,52 @@ export default {
         this.form.selectedServices = [],
         this.submitSearch();
     },
+
+
+    /* FUZNIONE PER PASSARE COME EMITS I VALORI DEL FORM */
     submitSearch() {
-      // Emetti un evento 'submit-search' con i dati del form
       this.$emit('submit-search', this.form);
     },
+
+    /* FUZNIONE CHE VIENE RICHIAMATA AL @CLICK QUANDO L'UTENTE SCEGLIE IL RAGGIO */
     selectRadius(radius) {
       this.form.radius = radius;
     }
   },
+
+
   props: {
     services: Array
   }
+
 }
+
 </script>
 
 
 <template>
-
+  <!-- FORM -->
   <form @submit.prevent="submitSearch">
     <div class="d-flex justify-content-center align-items-center gap-1">
+      <!-- INDIRIZZO -->
       <div class="input-container">
         <input type="text" v-model.trim="form.searchTerm" @input="searchPlace" placeholder="Cerca un indirizzo"
           class="form-control form">
         <i class="fa-solid fa-location-dot icon text-black"></i>
-        <ul v-if="form.showSuggestions" class="suggestions">
+        <ul v-if="form.showSuggestions" class="suggestions w-75">
           <li v-for="suggestion in form.suggestions" :key="suggestion.lat + suggestion.lon"
             @click="selectSuggestion(suggestion)">
             {{ suggestion.address }}
           </li>
         </ul>
       </div>
+      <!-- STANZE E POSTI LETTO -->
       <div class="dropdown">
         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="fa-solid fa-door-open me-3"></i><span class="me-4">{{ form.rooms }} Stanze &#8226; {{ form.beds }}
-            Posti
-            letto</span>
+          <i class="fa-solid fa-door-open me-3"></i><span class="me-4">{{ form.rooms }}Stanze &#8226;<i
+              class="fa-solid fa-bed mx-3"></i>{{ form.beds }} Posti letto</span>
         </button>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu p-3">
           <li>
             <i class="fa-solid fa-door-open mx-3"></i>
             Stanze
@@ -119,11 +143,12 @@ export default {
           </li>
         </ul>
       </div>
+      <!-- SERVIZI -->
       <div class="dropdown">
         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fa-solid fa-hand-holding-heart me-3"></i><span class="me-4">Servizi</span>
         </button>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu p-1">
           <li v-for="service in services" :key="service.id">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" name="selectedServices[]" :value="service.id"
@@ -135,14 +160,12 @@ export default {
           </li>
         </ul>
       </div>
+      <!-- RAGGIO -->
       <div class="dropdown">
         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fa-solid fa-ruler-horizontal me-3"></i><span class="me-4">Cerca entro 20 Km</span>
         </button>
         <ul class="dropdown-menu">
-          <!-- <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li> -->
           <li><a class="dropdown-item" @click="selectRadius(5000)" v-bind:class="{ 'active': form.radius === 5000 }">5
               km</a></li>
           <li><a class="dropdown-item" @click="selectRadius(10000)"
@@ -151,13 +174,13 @@ export default {
               v-bind:class="{ 'active': form.radius === 15000 }">15 km</a></li>
           <li><a class="dropdown-item" @click="selectRadius(20000)"
               v-bind:class="{ 'active': form.radius === 20000 }">20 km</a></li>
-
         </ul>
       </div>
+      <!-- BOOTONE CERCA -->
       <button class="btn text-white bg-hover" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
   </form>
-
+  <!-- BOTTONE RESET -->
   <button class="btn text-white bg-hover" type="reset" @click="resetFilter">Reset</button>
 
 </template>
@@ -165,9 +188,11 @@ export default {
 
 
 <style lang="scss" scoped>
+/* CONTENITORE INPUT INDIRIZZO */
 .input-container {
   position: relative;
 
+  /* ICONA */
   .icon {
     position: absolute;
     left: 10px;
@@ -176,6 +201,7 @@ export default {
     color: rgb(165, 164, 164);
   }
 
+  /* SCRITTA INPUT */
   input {
     padding-left: 35px;
   }
@@ -190,12 +216,14 @@ export default {
   }
 }
 
+/* INDIRIZZI SUGGERITI */
 .suggestions {
   background-color: whitesmoke;
   list-style: none;
-  margin: 0;
+  margin: 1px;
   padding: 10px;
   position: absolute;
+  border-radius: 2px;
 
   li {
     cursor: pointer;

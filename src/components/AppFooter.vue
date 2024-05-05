@@ -1,27 +1,39 @@
 <script>
+import { store } from '../data/store';
+
 export default {
-    name: 'AppFooter'
+    name: 'AppFooter',
+    data: () => ({
+        store,
+    }),
+
 };
 </script>
 
 <template>
-    <footer id="footer">
+    <div v-if="store.isLoading" ></div>
+    <!-- FOOTER -->
+    <footer v-else id="footer">
         <section class="footer-body container">
             <div class="row pt-3">
                 <div class="col-6">
-                    <h4>Collaboratori</h4>
-                    <ul class="list-social">
+                    <h2 class="text-white">Collaboratori</h2>
+                    <ul class="list-social mt-3">
                         <li>
-                            <address>Luca Bellan</address>
+                            <i class="fa-regular fa-hand-point-right"></i>
                         </li>
                         <li>
-                            <address>Fernando Verderame</address>
+                            <address><strong>Luca Bellan</strong></address>
                         </li>
                         <li>
-                            <address>Mario Costa</address>
+                            <address><strong>Fernando Verderame</strong></address>
+                            
                         </li>
                         <li>
-                            <address>Marco Fonti</address>
+                            <address><strong>Mario Costa</strong></address>
+                        </li>
+                        <li>
+                            <address><strong>Marco Fonti</strong></address>
                         </li>
                     </ul>
                 </div>
@@ -31,12 +43,18 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+
+/* FOOTER */
 #footer {
     color: black;
     margin-top: 20px;
+    background-color: #ff5a5f;
 }
 
+/* LISTA COLLABOLATORI */
 .list-social {
     list-style-type: none;
+    display: flex;
+    justify-content: space-around;
 }
 </style>

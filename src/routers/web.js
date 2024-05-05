@@ -1,8 +1,10 @@
+/* IMPORTAZIONI */
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../pages/HomePage.vue';
 import ApartmentDetailPage from '../pages/ApartmentDetailPage.vue';
 import NotFoundPage from '../pages/NotFoundPage.vue';
 
+/* ROTTE */
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -14,4 +16,5 @@ const router = createRouter({
     ]
 });
 
+/* ESPORTAZIONE */
 export { router };
