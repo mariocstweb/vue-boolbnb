@@ -27,7 +27,7 @@ export default {
 
         /* FUNZIONE PER FARE UNA CHIAMATA API PER VISSUALIZZARE TUTTI GLI APPARATEMNTI */
         fetchApartments(endpoint = defaultEndpoint) {
-            this.isLoading = true;
+            this.store.isLoading = true;
             if (!this.selectedAddress) {
                 axios.get(endpoint)
                     .then(response => {
@@ -40,7 +40,7 @@ export default {
                         this.isAlertOpen = true;
                     })
                     .finally(() => {
-                        this.isLoading = false;
+                        this.store.isLoading = false;
                     });
             }
         },
@@ -65,6 +65,8 @@ export default {
         /* FUNZIONE PER FARE UNA CHIAMATA API PER FILTRARE IN BASE A CERTI PARAMETRI SELEZIONATI DALL'UTENTE */
         handleAddressSelect(form) {
             console.log(form);
+
+            this.store.isLoading = true;
 
             /* SE LATITUDINE E LOGITUDINE SONO NULLI RICHIAMA LA FUNZIONE CON TUTTI GLI APPARTAMENTI */
             if (form.lat == null && form.lon == null) {
@@ -109,7 +111,7 @@ export default {
                         this.isAlertOpen = true;
                     })
                     .finally(() => {
-                        this.isLoading = false;
+                        this.store.isLoading = false;
                     });
 
                 console.log("Latitudine:", form.lat);
