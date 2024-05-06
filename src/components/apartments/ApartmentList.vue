@@ -8,7 +8,8 @@ export default {
 
     components: { ApartmentCard },
 
-    props: { apartments: Array }
+    props: { apartments: Object }
+
 
 };
 </script>

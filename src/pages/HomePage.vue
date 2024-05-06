@@ -14,7 +14,7 @@ const servicesEndpoint = 'http://localhost:8000/api/services/';
 
 export default {
     name: 'HomePage',
-    components: { ApartmentList, AppJumbo, SearchForm },
+    components: { ApartmentList, AppJumbo, AxiosExample, SearchForm, AppAlert },
     data: () => ({
         apartments: [],
         services: [],
@@ -127,9 +127,9 @@ export default {
 </script>
 
 <template>
-
     <!-- JUMBO -->
-    <AppJumbo @search-apartments="searchApartments" :services="services" />
+    <AppJumbo />
+
     <!-- CONTENUTO -->
     <div class="container">
         <!-- ALERT -->

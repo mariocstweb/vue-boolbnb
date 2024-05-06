@@ -29,6 +29,8 @@ export default {
     };
   },
 
+  emits: ['submit-search'],
+  
   methods: {
     /* FUNZIONE CHE SI ATTIVA ALL'EVENTO @INPUT (ADDRESS)  */
     searchPlace() {
