@@ -12,7 +12,7 @@ const servicesEndpoint = 'http://localhost:8000/api/services/';
 
 export default {
     name: 'HomePage',
-    components: { ApartmentList, AppJumbo, AxiosExample, SearchForm },
+    components: { ApartmentList, AppJumbo, AxiosExample, SearchForm, AppAlert },
     data: () => ({
         apartments: [],
         services: [],
@@ -128,7 +128,8 @@ export default {
 </script>
 
 <template>
-    <AppJumbo @search-apartments="searchApartments" :services="services" />
+    <!-- <AppJumbo @search-apartments="searchApartments" :services="services" /> -->
+    <AppJumbo />
     <div class="container">
         <AppAlert :show="isAlertOpen" @close="isAlertOpen = false" @retry="fetchApartments" />
         <div class="d-flex justify-content-center align-items-center search-form gap-1">

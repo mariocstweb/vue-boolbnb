@@ -26,6 +26,7 @@ export default {
       }
     };
   },
+  emits: ['submit-search'],
   methods: {
     searchPlace() {
       this.form.showSuggestions = true;

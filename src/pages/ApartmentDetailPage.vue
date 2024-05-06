@@ -4,6 +4,9 @@ import ApartmentShow from '../components/apartments/ApartmentShow.vue';
 import { store } from '../data/store';
 import axios from 'axios';
 const endpoint = 'http://localhost:8000/api/apartments/';
+// Endpoint per le visualizzazioni
+const viewsEndpoint = `http://localhost:8000/api/apartments/${this.$route.params.id}/views`;
+
 
 export default {
     name: 'ApartmentDetailPage',
@@ -20,10 +23,24 @@ export default {
                 .catch(err => { console.error(err) })
                 .then(() => { store.isLoading = false; })
         },
+
+        async sendView() {
+            try {
+                const res = await axios.post(viewsEndpoint, {
+                    apartment_id: this.apartment.id
+                });
+                console.log(res.data.indirizzoIP);
+            } catch (error) {
+                console.error('Errore durante il recupero dell\'indirizzo IP:', error);
+            }
+        }
     },
+
+
     created() {
+        console.log('created - ID dell\'appartamento:', this.$route.params.id);
         this.getPost();
-    }
+    },
 };
 </script>
 
@@ -31,7 +48,9 @@ export default {
     <AppLoader v-if="store.isLoading && !apartment" />
     <div class="container box-show">
 
-        <ApartmentShow v-if="!store.isLoading && apartment" :apartment="apartment" :isDetail="true" />
+        <!-- <ApartmentShow v-if="!store.isLoading && apartment" :apartment="apartment" :isDetail="true" /> -->
+        <!-- <ApartmentShow v-if="!store.isLoading && apartment" :apartment="apartment" :isDetail="true" /> -->
+        <ApartmentShow v-if="apartment" :apartment="apartment" :isDetail="true" />
     </div>
 
 </template>

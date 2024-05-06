@@ -4,7 +4,7 @@ import ApartmentCard from './ApartmentCard.vue';
 export default {
     name: 'ApartmentList',
     components: { ApartmentCard },
-    props: { apartments: Array }
+    props: { apartments: Object }
 };
 </script>
 
