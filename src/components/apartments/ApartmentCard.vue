@@ -12,9 +12,11 @@ export default {
 
         <!-- ROTTA CHE PORTA AL DETTAGLIO DELL'APPARTAMENTO -->
         <RouterLink class="navbar-brand " :to="{ name: 'apartment-detail', params: { id: apartment.id } }">
-            <div class="col">
+            <div class="col sponsor-box">
                 <!-- IMMAGINE -->
                 <img v-if="apartment.cover" :src="apartment.cover" :alt="apartment.title" class="box-img rounded-3">
+                <div class="sponsor" v-if="apartment.sponsors.length !== 0"><i class="fa-solid fa-award"></i> In
+                    Evidenza</div>
             </div>
             <div class="col">
                 <!-- TITOLO -->
@@ -44,5 +46,21 @@ export default {
 
 .h5 {
     font-size: 1.20rem;
+}
+
+.sponsor-box {
+    position: relative;
+}
+
+
+.sponsor {
+    position: absolute;
+    // background: linear-gradient(100deg, #FF5A5F, #FF9D0A);
+    background: linear-gradient(45deg, rgba(255, 90, 95, 1), rgba(255, 157, 10, 1));
+    color: white;
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+    border-radius: 8px;
 }
 </style>
