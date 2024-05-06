@@ -48,7 +48,7 @@ export default {
     color: white;
 }
 
-@media screen and (max-width: 520px) {
+@media screen and (max-width: 576px) {
     .text {
         font-size: 32px;
     }

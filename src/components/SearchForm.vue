@@ -97,6 +97,11 @@ export default {
       this.form.radius = radius;
     }
   },
+  computed: {
+    radiusInKm() {
+      return this.form.radius / 1000;
+    }
+  },
 
 
   props: {
@@ -110,84 +115,120 @@ export default {
 
 <template>
   <!-- FORM -->
-  <form @submit.prevent="submitSearch">
-    <div class="d-flex justify-content-center align-items-center gap-1">
-      <!-- INDIRIZZO -->
-      <div class="input-container">
-        <input type="text" v-model.trim="form.searchTerm" @input="searchPlace" placeholder="Cerca un indirizzo"
-          class="form-control form">
-        <i class="fa-solid fa-location-dot icon text-black"></i>
-        <ul v-if="form.showSuggestions" class="suggestions w-75">
-          <li v-for="suggestion in form.suggestions" :key="suggestion.lat + suggestion.lon"
-            @click="selectSuggestion(suggestion)">
-            {{ suggestion.address }}
-          </li>
-        </ul>
-      </div>
-      <!-- STANZE E POSTI LETTO -->
-      <div class="dropdown">
-        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="fa-solid fa-door-open me-3"></i><span class="me-4">{{ form.rooms }}Stanze &#8226;<i
-              class="fa-solid fa-bed mx-3"></i>{{ form.beds }} Posti letto</span>
-        </button>
-        <ul class="dropdown-menu p-3">
-          <li>
-            <i class="fa-solid fa-door-open mx-3"></i>
-            Stanze
-            <input type="number" class="form-control form" id="rooms" name="rooms" min="1" v-model="form.rooms">
-          </li>
-          <li>
-            <i class="fa-solid fa-bed mx-3"></i>
-            Posti letto
-            <input type="number" class="form-control form" id="beds" name="beds" min="1" v-model="form.beds">
-          </li>
-        </ul>
-      </div>
-      <!-- SERVIZI -->
-      <div class="dropdown">
-        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="fa-solid fa-hand-holding-heart me-3"></i><span class="me-4">Servizi</span>
-        </button>
-        <ul class="dropdown-menu p-1">
-          <li v-for="service in services" :key="service.id">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="selectedServices[]" :value="service.id"
-                :id="service.id" v-model="form.selectedServices">
-              <label class="form-check-label" :for="service.id">
-                {{ service.label }}
-              </label>
+  <div class="row justify-content-between gap-3 row-form">
+
+    <form @submit.prevent="submitSearch" class="col">
+      <div class="row justify-content-center px-0 box-form">
+        <div class="col p-0">
+          <!-- INDIRIZZO -->
+          <div class="input-container">
+            <input type="text" v-model.trim="form.searchTerm" @input="searchPlace" placeholder="Cerca un indirizzo"
+              class="form-control">
+            <i class="fa-solid fa-location-dot icon text-black"></i>
+            <ul v-if="form.showSuggestions" class="suggestions w-75">
+              <li v-for="suggestion in form.suggestions" :key="suggestion.lat + suggestion.lon"
+                @click="selectSuggestion(suggestion)">
+                {{ suggestion.address }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-2 d-flex justify-content-end p-0">
+          <!-- BOTTONE CERCA -->
+          <button class="btn btn text-white bg-hover" type="submit"><i
+              class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div class="col-1" v-if="form.lat && form.lon">
+          <button class="btn btn-light border border-light-subtle" type="button" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            <i class="fa-solid fa-sliders"></i>
+          </button>
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Filtri</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 d-flex flex-column gap-5">
+                  <!-- STANZE E POSTI LETTO -->
+                  <div>
+                    <h5>Stanze e Posti letto</h5>
+                    <ul>
+                      <li class="d-flex justify-content-start align-items-center mb-2">
+                        <i class="fa-solid fa-door-open mx-2"></i>
+
+                        <input type="number" class="form-control form" id="rooms" name="rooms" min="1"
+                          v-model="form.rooms">
+                      </li>
+                      <li class="d-flex justify-content-start align-items-center">
+                        <i class="fa-solid fa-bed mx-2"></i>
+
+                        <input type="number" class="form-control form" id="beds" name="beds" min="1"
+                          v-model="form.beds">
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- SERVIZI -->
+                  <div class="">
+                    <h5>Servizi</h5>
+                    <ul>
+                      <li v-for="service in services" :key="service.id">
+                        <div class="form-check d-flex gap-3 my-2">
+                          <input class="form-check-input" type="checkbox" name="selectedServices[]" :value="service.id"
+                            :id="service.id" v-model="form.selectedServices">
+                          <span class="material-symbols-outlined">{{ service.icon }}</span>
+                          <label class="form-check-label" :for="service.id">
+                            {{ service.label }}
+                          </label>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- RAGGIO -->
+                  <div class="rangekm">
+                    <h5>Distanza</h5>
+
+                    <div class="d-flex gap-3">
+                      <label for="customRange3" class="form-label">Km {{ radiusInKm }} </label>
+                      <input type="range" class="form-range" min="5000" max="20000" step="5000" id="customRange3"
+                        v-model="form.radius">
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn text-white bg-hover" type="submit" data-bs-dismiss="modal"><i
+                      class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+              </div>
             </div>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
-      <!-- RAGGIO -->
-      <div class="dropdown">
-        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="fa-solid fa-ruler-horizontal me-3"></i><span class="me-4">Cerca entro 20 Km</span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" @click="selectRadius(5000)" v-bind:class="{ 'active': form.radius === 5000 }">5
-              km</a></li>
-          <li><a class="dropdown-item" @click="selectRadius(10000)"
-              v-bind:class="{ 'active': form.radius === 10000 }">10 km</a></li>
-          <li><a class="dropdown-item" @click="selectRadius(15000)"
-              v-bind:class="{ 'active': form.radius === 15000 }">15 km</a></li>
-          <li><a class="dropdown-item" @click="selectRadius(20000)"
-              v-bind:class="{ 'active': form.radius === 20000 }">20 km</a></li>
-        </ul>
-      </div>
-      <!-- BOOTONE CERCA -->
-      <button class="btn text-white bg-hover" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+    <div class="col-2 box-button" v-if="form.lat && form.lon">
+
+      <!-- BOTTONE RESET -->
+      <button class="btn btn-secondary" type="reset" @click="resetFilter">Reset</button>
     </div>
-  </form>
-  <!-- BOTTONE RESET -->
-  <button class="btn text-white bg-hover" type="reset" @click="resetFilter">Reset</button>
+  </div>
+
 
 </template>
 
 
 
 <style lang="scss" scoped>
+.row-form {
+  background-color: #f2f2f2;
+  padding: 7px;
+  border-radius: 10px;
+}
+
 /* CONTENITORE INPUT INDIRIZZO */
 .input-container {
   position: relative;
@@ -216,6 +257,28 @@ export default {
   }
 }
 
+.form-check-input:checked {
+  background-color: #ff5a5f;
+  border-color: #ff5a5f;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  background-color: #ff5a5f;
+  /* Colore personalizzato */
+}
+
+
+
+.form-range {
+  width: 85%;
+}
+
 /* INDIRIZZI SUGGERITI */
 .suggestions {
   background-color: whitesmoke;
@@ -234,4 +297,13 @@ export default {
     }
   }
 }
-</style>
+
+// .box-form {
+//   position: relative;
+// }
+
+// .box-button {
+//   position: absolute;
+
+//   right: 25%;
+// }</style>
