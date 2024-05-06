@@ -151,7 +151,7 @@ export default {
 .search-form {
     margin: 0 auto;
     position: relative;
-    bottom: 25px;
+    bottom: 34px;
     max-width: 530px;
 }
 </style>
