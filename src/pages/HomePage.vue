@@ -14,7 +14,7 @@ const servicesEndpoint = 'http://localhost:8000/api/services/';
 
 export default {
     name: 'HomePage',
-    components: { ApartmentList, AppJumbo, AxiosExample, SearchForm, AppAlert },
+    components: { ApartmentList, AppJumbo, SearchForm, AppAlert },
     data: () => ({
         apartments: [],
         services: [],
@@ -147,7 +147,6 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-
 /* SERACHFORM  */
 .search-form {
     margin: 0 auto;

@@ -9,7 +9,7 @@ import axios from 'axios';
 /* ENDPOINT LISTA APPARATAMENTI */
 const endpoint = 'http://localhost:8000/api/apartments/';
 // Endpoint per le visualizzazioni
-const viewsEndpoint = `http://localhost:8000/api/apartments/${this.$route.params.id}/views`;
+// const viewsEndpoint = `http://localhost:8000/api/apartments/${this.$route.params.id}/views`;
 
 
 export default {
@@ -30,16 +30,16 @@ export default {
                 .then(() => { store.isLoading = false; })
         },
 
-        async sendView() {
-            try {
-                const res = await axios.post(viewsEndpoint, {
-                    apartment_id: this.apartment.id
-                });
-                console.log(res.data.indirizzoIP);
-            } catch (error) {
-                console.error('Errore durante il recupero dell\'indirizzo IP:', error);
-            }
-        }
+        // async sendView() {
+        //     try {
+        //         const res = await axios.post(viewsEndpoint, {
+        //             apartment_id: this.apartment.id
+        //         });
+        //         console.log(res.data.indirizzoIP);
+        //     } catch (error) {
+        //         console.error('Errore durante il recupero dell\'indirizzo IP:', error);
+        //     }
+        // }
     },
 
     /* ALL'AVVIO DELLA PAGINA */
@@ -64,10 +64,8 @@ export default {
 </template>
 
 <style scoped>
-
 /* BOX MARGINE SUPERIORE */
 .box-show {
     margin-top: 90px;
 }
-
 </style>
