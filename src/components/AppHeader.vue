@@ -55,6 +55,7 @@ export default {
     right: 0;
     left: 0;
     background-color: transparent;
+    transition: 0.5s linear;
 
     /* COLORE ALLA CLASSE DINAMICA DOPO LO SCROLL */
     &.change_color {

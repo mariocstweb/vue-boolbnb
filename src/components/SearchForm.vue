@@ -85,6 +85,10 @@ export default {
         this.form.lon = null,
         this.form.searchTerm = '',
         this.form.selectedServices = [],
+        this.showSuggestions = false,
+        this.suggestions = [],
+        this.radius = 5000,
+        this.baseUri = 'https://api.tomtom.com/search/2/geocode/',
         this.submitSearch();
     },
 
@@ -131,6 +135,9 @@ export default {
               <li v-for="suggestion in form.suggestions" :key="suggestion.lat + suggestion.lon"
                 @click="selectSuggestion(suggestion)">
                 {{ suggestion.address }}
+              </li>
+              <li v-if="form.showSuggestions && form.suggestions.length === 0" class="pe-none">
+                <i class="fas fa-spinner fa-pulse p-3"></i>
               </li>
             </ul>
           </div>
