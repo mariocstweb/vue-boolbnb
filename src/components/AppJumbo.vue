@@ -18,15 +18,14 @@ export default {
     <div class="jumbotron">
         <div class="container-jumbo h-100 d-flex justify-content-center align-items-center flex-column">
             <h2 class="text mb-3">Trova l'appartamento dei tuoi sogni con</h2>
-            <div>
-                <img src="../img/logo-jumbo.png" alt="logo" class="logo">
+            <div class="box-img">
+                <img src="../img/logo-jumbo.png" alt="logo" class="img-fluid">
             </div>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-
 /* CONTENITORE JUMBO */
 .container-jumbo {
     margin: 0 auto;
@@ -49,4 +48,59 @@ export default {
     color: white;
 }
 
+
+@media screen and (max-width: 576px) {
+    .text {
+        font-size: 35px;
+    }
+
+    .box-img {
+        height: auto;
+        width: 300px;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .text {
+        font-size: 35px;
+    }
+
+    .box-img {
+        height: auto;
+        width: 300px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .text {
+        font-size: 40px;
+    }
+
+    .box-img {
+        height: auto;
+        width: 400px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .text {
+        font-size: 45px;
+    }
+
+    .box-img {
+        height: auto;
+        width: 450px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .text {
+        font-size: 48px;
+    }
+
+    .box-img {
+        height: auto;
+        width: 480px;
+    }
+}
 </style>

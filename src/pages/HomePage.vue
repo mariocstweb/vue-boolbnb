@@ -134,7 +134,7 @@ export default {
     <div class="container">
         <!-- ALERT -->
         <AppAlert :show="isAlertOpen" @close="isAlertOpen = false" @retry="fetchApartments" />
-        <div class="d-flex justify-content-center align-items-center search-form gap-1">
+        <div class=" search-form p-2">
             <!-- BARRA DI RICERCA -->
             <SearchForm @submit-search="handleAddressSelect" :services="services" />
         </div>
@@ -152,9 +152,6 @@ export default {
     margin: 0 auto;
     position: relative;
     bottom: 25px;
-    background-color: #f2f2f2;
-    padding: 7px 7px;
-    border-radius: 10px;
-    max-width: 1100px;
+    max-width: 530px;
 }
 </style>
