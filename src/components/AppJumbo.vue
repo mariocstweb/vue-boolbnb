@@ -48,14 +48,59 @@ export default {
     color: white;
 }
 
+
 @media screen and (max-width: 576px) {
     .text {
-        font-size: 32px;
+        font-size: 35px;
     }
 
     .box-img {
         height: auto;
         width: 300px;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .text {
+        font-size: 35px;
+    }
+
+    .box-img {
+        height: auto;
+        width: 300px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .text {
+        font-size: 40px;
+    }
+
+    .box-img {
+        height: auto;
+        width: 400px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .text {
+        font-size: 45px;
+    }
+
+    .box-img {
+        height: auto;
+        width: 450px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .text {
+        font-size: 48px;
+    }
+
+    .box-img {
+        height: auto;
+        width: 480px;
     }
 }
 </style>
