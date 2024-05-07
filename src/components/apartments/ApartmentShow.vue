@@ -3,7 +3,8 @@
 /* IMPORTAZIONI */
 import { RouterLink } from 'vue-router';
 import axios from 'axios';
-
+import tt from "@tomtom-international/web-sdk-maps";
+import '@tomtom-international/web-sdk-maps/dist/maps.css';
 /* ENDPOINT */
 const message_endpoint = 'http://localhost:8000/api/messages';
 
@@ -74,6 +75,21 @@ export default {
         isEmpty(obj) {
             return Object.entries(obj).length
         },
+        getMap() {
+            if (this.apartment.address) {
+                const mapContainer = document.getElementById('map');
+                const lat = mapContainer.dataset.latitude;
+                const lon = mapContainer.dataset.longitude;
+                const map = tt.map({
+                    key: 'CQWxKov1VbOtQuz5Ermuoa57Re2YitYT',
+                    container: mapContainer,
+                    center: [lon, lat],
+                    zoom: 8
+                });
+                map.addControl(new tt.NavigationControl());
+                const marker = new tt.Marker().setLngLat([lon, lat]).addTo(map);
+            }
+        },
     },
 
     props: { apartment: Object, isDetail: Boolean },
@@ -82,7 +98,12 @@ export default {
         /* CONTROLLO EORRE PRIMA DI MANDARE LA CHIAMATA API */
         hasErrors() {
             return Object.entries(this.errors).length
-        }
+        },
+    },
+    created() {
+        setTimeout(() => {
+            this.getMap();
+        }, 2000);
     }
 };
 
@@ -106,105 +127,134 @@ export default {
             <div class="col">
                 <!-- TITOLO -->
                 <h1>{{ apartment.title }}</h1>
+                <hr>
             </div>
         </div>
         <section id="info-apartment" class="mt-3">
-            <div class="row row-photo pb-3">
-                <div class="col-6">
+            <div class="row row-photo rounded-4 p-3 shadow mx-1 mb-5">
+                <div class="col d-md-none">
+                    <div id="carouselExampleFade" class="carousel slide carousel-fade">
+                        <div class="carousel-inner rounded-4" style="height: 270px;">
+                            <div class="carousel-item active">
+                                <img :src="apartment.cover" :alt="apartment.title" class=" rounded-4 img-fluid">
+                            </div>
+                            <div v-for="image in apartment.photo" :key="image.id" class="carousel-item">
+                                <img :src="image.image" :alt="apartment.title" class="rounded-4 img-fluid">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm-12 d-none d-md-block col-md-6">
                     <!-- IMMAGINE -->
                     <img :src="apartment.cover" :alt="apartment.title" class=" rounded-4 img-fluid">
                 </div>
-                <div class="col-6 d-flex">
-                    <div class="row">
-                        <div v-for="image in apartment.photo" :key="image.id" class="col-6">
-                            <img :src="image.image" :alt="apartment.title" class="rounded-3 img-fluid">
+                <div class="col-md-6 d-none d-md-block d-flex align-items-center">
+                    <div class="row g-3">
+                        <div v-for="image in apartment.photo" :key="image.id" class="col-6 px-1">
+                            <img :src="image.image" :alt="apartment.title" class="rounded-4 img-fluid">
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <!-- INDIRIZZO -->
-                    <p class="fs-5"><i class="fa-solid fa-location-dot me-2 color-main"></i> {{ apartment.address }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <!-- DESCRIZIONE -->
-                    <h2 class="mb-3"> Descrizione</h2>
-                    <p class="fs-5">{{ apartment.description }}</p>
-                    <!-- DETTAGLI DELL'APPARTAMENTO -->
-                    <section id="detail">
-                        <h2 class="card-title mt-5 mb-2">Dettaglio appartamento</h2>
-                        <div class="fw-medium stats mb-2">Come è composto</div>
-                        <ul class="d-flex gap-3">
-                            <li>
-                                <span class="badge fw-medium"><i class="fa-solid fa-door-closed me-2"></i>
-                                    {{ apartment.rooms }} camere</span>
-                            </li>
-                            <li>
-                                <span class="badge fw-medium"><i class="fa-solid fa-bath me-2"></i>
-                                    {{ apartment.bathrooms }} bagni</span>
-                            </li>
-                            <li>
-                                <span class="badge fw-medium"><i class="fa-solid fa-ruler-horizontal me-2"></i>
-                                    {{ apartment.sqm }} mq</span>
-                            </li>
-                            <li>
-                                <span class="badge fw-medium"><i class="fa-solid fa-bed me-2"></i> {{ apartment.rooms }}
-                                    letti</span>
-                            </li>
-                        </ul>
-                    </section>
-                </div>
-                <div class="col">
-                    <!-- SERVIZI -->
-                    <h2 class="mb-3"> Servizi</h2>
-                    <ul>
-                        <li v-for="service in apartment.services"
-                            class="fw-medium mb-3 d-flex gap-3 align-items-center fs-5">
-                            <i class="fa-solid fa-circle-check icon-show"></i>
-                            <span class="material-symbols-outlined">{{ service.icon }}</span>
-                            {{ service.label }}
+                <!-- INDIRIZZO -->
+                <p class="fs-5 mt-3"><i class="fa-solid fa-location-dot me-2 color-main"></i> {{ apartment.address }}
+                </p>
+                <!-- DETTAGLI DELL'APPARTAMENTO -->
+                <section id="detail">
+                    <ul class="d-flex gap-3">
+                        <li>
+                            <span class="badge fw-medium"><i class="fa-solid fa-door-closed me-2"></i>
+                                {{ apartment.rooms }} camere</span>
+                        </li>
+                        <li>
+                            <span class="badge fw-medium"><i class="fa-solid fa-bath me-2"></i>
+                                {{ apartment.bathrooms }} bagni</span>
+                        </li>
+                        <li>
+                            <span class="badge fw-medium"><i class="fa-solid fa-ruler-horizontal me-2"></i>
+                                {{ apartment.sqm }} mq</span>
+                        </li>
+                        <li>
+                            <span class="badge fw-medium"><i class="fa-solid fa-bed me-2"></i> {{ apartment.rooms }}
+                                letti</span>
                         </li>
                     </ul>
+                </section>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-sm-12 col-md-6">
+                    <div class="card rounded-4 h-100 p-3 shadow">
+
+                        <!-- DESCRIZIONE -->
+                        <h2 class=""> Descrizione</h2>
+                        <hr>
+                        <p class="descrizione">{{ apartment.description }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="card rounded-4 h-100 p-3 shadow">
+
+                        <!-- SERVIZI -->
+                        <h2 class=""> Servizi</h2>
+                        <hr>
+                        <ul>
+                            <li v-for="service in apartment.services"
+                                class="fw-medium mb-3 d-flex gap-3 align-items-center text-service">
+                                <i class="fa-solid fa-circle-check icon-show"></i>
+                                <span class="material-symbols-outlined">{{ service.icon }}</span>
+                                {{ service.label }}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+            <hr>
+            <!-- Mappa -->
+            <h3 class="mb-3">Dove ti troverai</h3>
+            <div class="row p-3">
+                <div class="col shadow rounded-4">
+                    <div v-if="apartment.address">
+                        <div id="map" :data-latitude="apartment.latitude" :data-longitude="apartment.longitude"
+                            style="height:480px"></div>
+                    </div>
+                </div>
+                <div class="mt-4"><i class="fa-solid fa-location-dot me-1 color-main"></i> {{ apartment.address }}</div>
+            </div>
+            <hr>
             <!-- INFORMAZIONI HOST -->
-            <h2>Informazioni sull'host</h2>
-            <div class="row bg-beige rounded-4 p-5">
-                <div class="col-3">
-                    <div class="d-flex flex-column gap-4 align-items-center">
-                        <img :src="apartment.cover" alt="profile" width="150px" height="150px" class="rounded-circle">
-                        <h4>Mario Rossi</h4>
-                    </div>
-                </div>
-                <div class="col-3">
-                    <!-- APPARTAMENTI -->
-                    <div class="d-flex flex-column gap-4 align-items-center">
-                        <h1 class="font-number">50</h1>
-                        <h4><i class="fa-solid fa-building me-2"></i>Appartamenti</h4>
-                    </div>
-                </div>
-                <div class="col-3">
+            <h2>Popolarità</h2>
+            <hr>
+            <div class="row bg-beige rounded-4 p-5 shadow mx-3">
+                <div class="col-6">
                     <!-- MESSAGGI -->
-                    <div class="d-flex flex-column gap-4 align-items-center">
-                        <h1 class="font-number">10</h1>
-                        <h4><i class="fa-solid fa-envelope me-2"></i>Messaggi</h4>
+                    <div class="d-flex flex-column gap-1 align-items-center">
+                        <h1 class="font-number">{{ apartment.messages.length }}</h1>
+                        <h4 class="fs-5"><i class="fa-solid fa-envelope me-2"></i>Messaggi</h4>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-6">
                     <!-- VISSUALIZZAZZIONI -->
-                    <div class="d-flex flex-column gap-4 align-items-center">
-                        <h1 class="font-number">500</h1>
-                        <h4><i class="fa-solid fa-eye me-2"></i>Visualizzazioni</h4>
+                    <div class="d-flex flex-column gap-1 align-items-center">
+                        <h1 class="font-number">{{ apartment.views.length }}</h1>
+                        <h4 class="fs-5"><i class="fa-solid fa-eye me-2"></i>Visualizzazioni</h4>
                     </div>
                 </div>
             </div>
         </section>
-        <section id="message-form" class="mt-5">
-            <h3 class="mb-3">Contatta l'host per maggiori informazioni</h3>
-            <div class="card p-3 border-3 border-secondary mb-5">
+        <section id="message-form" class="mt-5 ">
+            <h3 class="mb-3">Invia un messaggio all'host</h3>
+            <hr>
+            <div class="card rounded-4 p-3 shadow  mb-5">
                 <!-- FORM -->
                 <form class="form-floating needs-validation" @submit.prevent=" sendMessage(apartment.id)" novalidate>
                     <!-- NOME -->
@@ -267,13 +317,23 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.descrizione {
+    font-size: 20px;
+}
+
+.text-service {
+    font-size: 20px;
+}
+
+
 .card {
-    border: 1px solid #258277;
+    border: 1px solid rgb(197, 197, 197);
 }
 
 .icon-show {
     color: #ff5a5f;
 }
+
 
 
 .card-header,
