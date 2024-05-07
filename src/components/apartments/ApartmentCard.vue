@@ -15,8 +15,9 @@ export default {
             <div class="col sponsor-box">
                 <!-- IMMAGINE -->
                 <img v-if="apartment.cover" :src="apartment.cover" :alt="apartment.title" class="box-img rounded-3">
-                <div class="sponsor" v-if="apartment.sponsors.length !== 0"><i class="fa-solid fa-award"></i> In
-                    Evidenza</div>
+                <div class="sponsor" v-if="apartment.sponsors && apartment.sponsors.length !== 0">
+                    <i class="fa-solid fa-award"></i> In Evidenza
+                </div>
             </div>
             <div class="col">
                 <!-- TITOLO -->
