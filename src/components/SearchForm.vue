@@ -30,7 +30,7 @@ export default {
   },
 
   emits: ['submit-search'],
-  
+
   methods: {
     /* FUNZIONE CHE SI ATTIVA ALL'EVENTO @INPUT (ADDRESS)  */
     searchPlace() {
@@ -296,6 +296,7 @@ input[type="range"]::-webkit-slider-thumb {
   padding: 10px;
   position: absolute;
   border-radius: 2px;
+  z-index: 1;
 
   li {
     cursor: pointer;

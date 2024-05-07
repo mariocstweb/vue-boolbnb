@@ -110,9 +110,16 @@ export default {
         </div>
         <section id="info-apartment" class="mt-3">
             <div class="row row-photo pb-3">
-                <div class="col">
+                <div class="col-6">
                     <!-- IMMAGINE -->
-                    <img :src="apartment.cover" :alt="apartment.title" class=" rounded-4">
+                    <img :src="apartment.cover" :alt="apartment.title" class=" rounded-4 img-fluid">
+                </div>
+                <div class="col-6 d-flex">
+                    <div class="row">
+                        <div v-for="image in apartment.photo" :key="image.id" class="col-6">
+                            <img :src="image.image" :alt="apartment.title" class="rounded-3 img-fluid">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
