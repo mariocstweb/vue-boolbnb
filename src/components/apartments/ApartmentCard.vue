@@ -25,7 +25,7 @@ export default {
             </div>
             <div class="col-12 d-flex justify-content-start align-items-center">
                 <!-- INDIRIZZO -->
-                <div class=""><i class="fa-solid fa-location-dot me-1 color-main"></i> {{
+                <div class="w-text"><i class="fa-solid fa-location-dot me-1 color-main"></i> {{
                     apartment.address }}</div>
             </div>
         </RouterLink>
@@ -34,9 +34,14 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.w-text {
+    width: 50px;
+}
+
+
 /* IMMAGINE */
 .box-img {
-    height: 270px;
+    height: 300px;
     width: 100%;
 }
 
