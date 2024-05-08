@@ -11,31 +11,37 @@ export default {
 </script>
 
 <template>
-    <div v-if="store.isLoading" ></div>
+    <div v-if="store.isLoading"></div>
     <!-- FOOTER -->
     <footer v-else id="footer">
+        <hr>
         <section class="footer-body container">
-            <div class="row pt-3">
+            <div class="row align-items-center">
                 <div class="col-6">
-                    <h2 class="text-white">Collaboratori</h2>
-                    <ul class="list-social mt-3">
+                    <ul class="list-social d-flex align-items-center">
                         <li>
-                            <i class="fa-regular fa-hand-point-right"></i>
+                            <address><strong>© 2024 Airbnb, Inc.</strong></address>
                         </li>
                         <li>
-                            <address><strong>Luca Bellan</strong></address>
+                            <address><strong>Privacy</strong></address>
                         </li>
                         <li>
-                            <address><strong>Fernando Verderame</strong></address>
-                            
+                            <address><strong>Termini</strong></address>
+
                         </li>
                         <li>
-                            <address><strong>Mario Costa</strong></address>
+                            <address><strong>Mappa del sito</strong></address>
                         </li>
                         <li>
-                            <address><strong>Marco Fonti</strong></address>
+                            <address><strong>Dettagli dell'azienda</strong></address>
                         </li>
                     </ul>
+                </div>
+                <div class="col-6 justify-content-end d-flex">
+                    <ul>
+                        <li><i class="fa-solid fa-globe"></i> Italiano (IT)</li>
+                    </ul>
+
                 </div>
             </div>
         </section>
@@ -43,12 +49,13 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-
 /* FOOTER */
 #footer {
-    color: black;
-    margin-top: 20px;
-    background-color: #ff5a5f;
+    height: 150px;
+
+    ul {
+        list-style-type: none;
+    }
 }
 
 /* LISTA COLLABOLATORI */
@@ -56,5 +63,6 @@ export default {
     list-style-type: none;
     display: flex;
     justify-content: space-around;
+    margin-bottom: 0;
 }
 </style>
