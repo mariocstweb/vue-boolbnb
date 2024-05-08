@@ -23,7 +23,7 @@ export default {
             },
             errors: {},
             successMessage: '',
-            loadingMessage: false
+            loadingMessage: false,
         }
     },
 
@@ -75,21 +75,33 @@ export default {
         isEmpty(obj) {
             return Object.entries(obj).length
         },
-        getMap() {
-            if (this.apartment.address) {
-                const mapContainer = document.getElementById('map');
+        handleMapButtonClick() {
+            const mapContainer = document.getElementById('map');
+
+            if (mapContainer) {
                 const lat = mapContainer.dataset.latitude;
                 const lon = mapContainer.dataset.longitude;
-                const map = tt.map({
-                    key: 'CQWxKov1VbOtQuz5Ermuoa57Re2YitYT',
-                    container: mapContainer,
-                    center: [lon, lat],
-                    zoom: 8
-                });
-                map.addControl(new tt.NavigationControl());
-                const marker = new tt.Marker().setLngLat([lon, lat]).addTo(map);
+
+                if (lat && lon) {
+                    const map = tt.map({
+                        key: 'xPixmtfscbCf9Bo3ADiioc9uvS3Bs4uw',
+                        container: mapContainer,
+                        center: [lon, lat],
+                        zoom: 12
+                    });
+
+                    map.addControl(new tt.NavigationControl());
+
+                    const marker = new tt.Marker().setLngLat([lon, lat]).addTo(map);
+
+                    setTimeout(() => { map.resize(); }, 150);
+                } else {
+                    console.error('Latitudine o longitudine mancante o non valida.');
+                }
             }
-        },
+        }
+
+
     },
 
     props: { apartment: Object, isDetail: Boolean },
@@ -100,10 +112,8 @@ export default {
             return Object.entries(this.errors).length
         },
     },
-    created() {
-        setTimeout(() => {
-            this.getMap();
-        }, 2000);
+    mounted() {
+        this.handleMapButtonClick();
     }
 };
 
@@ -222,15 +232,17 @@ export default {
             <!-- Mappa -->
             <h3 class="mb-3">Dove ti troverai</h3>
             <div class="row p-3">
-                <div class="col shadow rounded-4">
-                    <div v-if="apartment.address">
-                        <div id="map" :data-latitude="apartment.latitude" :data-longitude="apartment.longitude"
-                            style="height:480px"></div>
+                <div class="col shadow rounded-4 p-3">
+                    <div class="map-box">
+                        <div id="map" style="width: 100%; height: 500px" :data-latitude="apartment.latitude"
+                            :data-longitude="apartment.longitude">
+                        </div>
                     </div>
                 </div>
                 <div class="mt-4"><i class="fa-solid fa-location-dot me-1 color-main"></i> {{ apartment.address }}</div>
             </div>
             <hr>
+
             <!-- INFORMAZIONI HOST -->
             <h2>Popolarità</h2>
             <hr>
@@ -421,5 +433,9 @@ export default {
     &:hover {
         color: #ff999c;
     }
+}
+
+#map {
+    border-radius: 16px;
 }
 </style>
