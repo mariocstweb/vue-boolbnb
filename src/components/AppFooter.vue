@@ -17,8 +17,8 @@ export default {
         <hr>
         <section class="footer-body container">
             <div class="row align-items-center">
-                <div class="col-6">
-                    <ul class="list-social d-flex align-items-center">
+                <div class="col col-md-9">
+                    <ul class="list-social flex-column flex-lg-row align-items-lg-center align-items-start">
                         <li>
                             <address><strong>© 2024 Airbnb, Inc.</strong></address>
                         </li>
@@ -37,7 +37,7 @@ export default {
                         </li>
                     </ul>
                 </div>
-                <div class="col-6 justify-content-end d-flex">
+                <div class="col col-md-3 justify-content-end d-flex">
                     <ul>
                         <li><i class="fa-solid fa-globe"></i> Italiano (IT)</li>
                     </ul>
