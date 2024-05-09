@@ -39,10 +39,17 @@ export default {
 }
 
 
+
+
 /* IMMAGINE */
 .box-img {
     height: 300px;
     width: 100%;
+    transition: transform .2s;
+
+    &:hover {
+        transform: scale(1.03);
+    }
 }
 
 /* COLORE BASE */
