@@ -1,6 +1,8 @@
 <script>
+import AppLogin from './AppLogin.vue'
 export default {
     name: 'AppHeader',
+    components: { AppLogin },
 
     data() {
         return {
@@ -27,23 +29,32 @@ export default {
 
     <!-- HEADER -->
     <nav class="navbar" id="navbar" :class="{ change_color: scrollposition > 100 }">
-        <div class=" container d-flex justify-content-start align-items-center">
+        <div class=" container d-flex justify-content-between align-items-center">
             <!-- LOGO CON ROTTA ALLA HOMEPAGE -->
-            <RouterLink class="navbar-brand color-base p-0 me-4" :to="{ name: 'home' }">
-                <img src="../img/logo.png" alt="BoolBnB" width="40px">
-                BoolBnB
-            </RouterLink>
-            <!-- ROTTA ALLA HOMEPAGE -->
-            <RouterLink class="navbar-brand mb-1 p-0" :to="{ name: 'home' }">
-                <span class="color-main h5">Home</span>
-            </RouterLink>
+
+            <div>
+                <RouterLink class="navbar-brand color-base p-0 me-4" :to="{ name: 'home' }">
+                    <img src="../img/logo.png" alt="BoolBnB" width="40px">
+                    BoolBnB
+                </RouterLink>
+                <!-- ROTTA ALLA HOMEPAGE -->
+                <RouterLink class="navbar-brand mb-1 p-0" :to="{ name: 'home' }">
+                    <span class="color-main h5">Home</span>
+                </RouterLink>
+
+                <a href="http://127.0.0.1:8000/" class="color-main me-3 h5">Pannello di controllo</a>
+
+
+                <a href="http://127.0.0.1:8000/admin/apartments" class="color-main h5">Appartamenti</a>
+
+            </div>
+            <AppLogin />
         </div>
     </nav>
 
 </template>
 
 <style scoped lang="scss">
-
 /* HEADER */
 #navbar {
     width: 100%;
@@ -63,8 +74,12 @@ export default {
         transition: 0.5s linear;
     }
 
+    a {
+        text-decoration: none;
+    }
+
     /* COLORE BASE */
-    .color-base{
+    .color-base {
         color: #ff5a5f;
     }
 
