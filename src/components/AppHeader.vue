@@ -42,11 +42,6 @@ export default {
                     <span class="color-main h5">Home</span>
                 </RouterLink>
 
-                <a href="http://127.0.0.1:8000/" class="color-main me-3 h5">Pannello di controllo</a>
-
-
-                <a href="http://127.0.0.1:8000/admin/apartments" class="color-main h5">Appartamenti</a>
-
             </div>
             <AppLogin />
         </div>
